@@ -7,21 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E10F4D981EFE441100A03E3F /* EditSheepTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10F4D971EFE441100A03E3F /* EditSheepTableViewController.swift */; };
+		E10F4D9A1EFE483E00A03E3F /* EditSheepTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10F4D991EFE483E00A03E3F /* EditSheepTableViewCell.swift */; };
+		E11136681EFD7ECD00DABB4E /* DetailedSheepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11136671EFD7ECD00DABB4E /* DetailedSheepCell.swift */; };
 		E12839541EFAC40A006CE4C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12839531EFAC40A006CE4C5 /* AppDelegate.swift */; };
-		E12839561EFAC40A006CE4C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12839551EFAC40A006CE4C5 /* ViewController.swift */; };
 		E12839591EFAC40A006CE4C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E12839571EFAC40A006CE4C5 /* Main.storyboard */; };
 		E128395B1EFAC40A006CE4C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E128395A1EFAC40A006CE4C5 /* Assets.xcassets */; };
 		E128395E1EFAC40A006CE4C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E128395C1EFAC40A006CE4C5 /* LaunchScreen.storyboard */; };
+		E12839661EFAC4A0006CE4C5 /* Sheep.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12839651EFAC4A0006CE4C5 /* Sheep.swift */; };
+		E12839681EFACBDA006CE4C5 /* SheepListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12839671EFACBDA006CE4C5 /* SheepListTableViewController.swift */; };
+		E128396A1EFACC93006CE4C5 /* SheepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12839691EFACC93006CE4C5 /* SheepCell.swift */; };
+		E1D0B3441EFC14E000B1CB81 /* DetailedSheepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D0B3431EFC14E000B1CB81 /* DetailedSheepViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E10F4D971EFE441100A03E3F /* EditSheepTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditSheepTableViewController.swift; path = ../EditSheepTableViewController.swift; sourceTree = "<group>"; };
+		E10F4D991EFE483E00A03E3F /* EditSheepTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditSheepTableViewCell.swift; path = ../EditSheepTableViewCell.swift; sourceTree = "<group>"; };
+		E11136671EFD7ECD00DABB4E /* DetailedSheepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedSheepCell.swift; sourceTree = "<group>"; };
 		E12839501EFAC40A006CE4C5 /* SheepList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SheepList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E12839531EFAC40A006CE4C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E12839551EFAC40A006CE4C5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E12839581EFAC40A006CE4C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E128395A1EFAC40A006CE4C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E128395D1EFAC40A006CE4C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E128395F1EFAC40A006CE4C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E12839651EFAC4A0006CE4C5 /* Sheep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sheep.swift; sourceTree = "<group>"; };
+		E12839671EFACBDA006CE4C5 /* SheepListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheepListTableViewController.swift; sourceTree = "<group>"; };
+		E12839691EFACC93006CE4C5 /* SheepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheepCell.swift; sourceTree = "<group>"; };
+		E1D0B3431EFC14E000B1CB81 /* DetailedSheepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedSheepViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +66,15 @@
 		E12839521EFAC40A006CE4C5 /* SheepList */ = {
 			isa = PBXGroup;
 			children = (
+				E10F4D991EFE483E00A03E3F /* EditSheepTableViewCell.swift */,
+				E10F4D971EFE441100A03E3F /* EditSheepTableViewController.swift */,
 				E12839531EFAC40A006CE4C5 /* AppDelegate.swift */,
-				E12839551EFAC40A006CE4C5 /* ViewController.swift */,
 				E12839571EFAC40A006CE4C5 /* Main.storyboard */,
+				E1D0B3431EFC14E000B1CB81 /* DetailedSheepViewController.swift */,
+				E12839651EFAC4A0006CE4C5 /* Sheep.swift */,
+				E12839671EFACBDA006CE4C5 /* SheepListTableViewController.swift */,
+				E12839691EFACC93006CE4C5 /* SheepCell.swift */,
+				E11136671EFD7ECD00DABB4E /* DetailedSheepCell.swift */,
 				E128395A1EFAC40A006CE4C5 /* Assets.xcassets */,
 				E128395C1EFAC40A006CE4C5 /* LaunchScreen.storyboard */,
 				E128395F1EFAC40A006CE4C5 /* Info.plist */,
@@ -136,8 +154,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E12839561EFAC40A006CE4C5 /* ViewController.swift in Sources */,
+				E12839661EFAC4A0006CE4C5 /* Sheep.swift in Sources */,
+				E12839681EFACBDA006CE4C5 /* SheepListTableViewController.swift in Sources */,
+				E128396A1EFACC93006CE4C5 /* SheepCell.swift in Sources */,
+				E1D0B3441EFC14E000B1CB81 /* DetailedSheepViewController.swift in Sources */,
 				E12839541EFAC40A006CE4C5 /* AppDelegate.swift in Sources */,
+				E10F4D9A1EFE483E00A03E3F /* EditSheepTableViewCell.swift in Sources */,
+				E11136681EFD7ECD00DABB4E /* DetailedSheepCell.swift in Sources */,
+				E10F4D981EFE441100A03E3F /* EditSheepTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +327,7 @@
 				E12839641EFAC40A006CE4C5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

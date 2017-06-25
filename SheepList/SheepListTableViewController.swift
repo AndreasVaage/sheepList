@@ -120,14 +120,48 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     func filterContentForSearchText(searchText: String, scope: String = "All"){
         filteredSheeps = sheeps.filter { sheep in
             for lamb in sheep.lambs {
-                if lamb.sheepID.lowercased().contains(searchText.lowercased()){
+                if subSecuence(is: searchText.lowercased(), subSecuenceOff: lamb.sheepID.lowercased()){
                     return true
                 }
             }
-            return sheep.sheepID.lowercased().contains(searchText.lowercased())
+            return subSecuence(is: searchText.lowercased(), subSecuenceOff: sheep.sheepID.lowercased())
         }
         tableView.reloadData()
     }
+    
+    func subSecuence(is str1: String,subSecuenceOff str2: String) -> Bool {
+        if str1.isEmpty {
+            return true
+        }
+        if str2.isEmpty{
+            fatalError("Empty Sheep ID detected")
+        }
+        var offset = 0
+        for letter in str2.characters{
+            guard let index =  str1.index(str1.startIndex, offsetBy: offset, limitedBy: str1.index(before: str1.endIndex)) else{
+                return true
+            }
+            if letter == str1[index]{
+                offset += 1
+            }
+        }
+        return offset == str1.characters.count
+    }
+    
+//    bool isSubSequence(char str1[], char str2[], int m, int n)
+//    {
+//    int j = 0; // For index of str1 (or subsequence
+//    
+//    // Traverse str2 and str1, and compare current character
+//    // of str2 with first unmatched char of str1, if matched
+//    // then move ahead in str1
+//    for (int i=0; i<n&&j<m; i++)
+//    if (str1[j] == str2[i])
+//    j++;
+//    
+//    // If all characters of str1 were found in str2
+//    return (j==m);
+//    }
     
 //    func checkmarkTapped(sender: SheepCell) {
 //        if let indexPath = tableView.indexPath(for: sender) {

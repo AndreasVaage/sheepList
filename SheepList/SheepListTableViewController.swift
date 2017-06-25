@@ -10,17 +10,30 @@ import UIKit
 
 class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     var sheeps = [Sheep]()
+    var filteredSheeps = [Sheep]()
     //var lambs = [Sheep]()
+    
+    let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        let searchBar = searchController.searchBar
+        searchBar.keyboardType = UIKeyboardType.numberPad
+        tableView.tableHeaderView = searchBar
+        
+        
+        
         if let savedSheeps = Sheep.loadSheeps() {
             sheeps = savedSheeps
         } else {
             sheeps = Sheep.loadSampleSheeps()
         }
         navigationItem.leftBarButtonItem = editButtonItem
-        
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 88
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -28,7 +41,13 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
             let detailedSheepViewController = segue.destination
                 as! DetailedSheepViewController
             let indexPath = tableView.indexPathForSelectedRow!
-            let selectedSheep = sheeps[indexPath.row]
+            
+            let selectedSheep: Sheep
+            if searchController.isActive && searchController.searchBar.text != "" {
+                selectedSheep = filteredSheeps[indexPath.row]
+            }else{
+                selectedSheep = sheeps[indexPath.row]
+            }
             detailedSheepViewController.sheep = selectedSheep
         }
     }
@@ -52,37 +71,62 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.isActive && searchController.searchBar.text != "" {
+            return filteredSheeps.count
+        }
         return sheeps.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SheepCellIdentifier") as? SheepCell else {
             fatalError("Could not dequeue a cell")
-            
+        }
+        guard cell.LambStackView.subviews.count == cell.LambStackView.arrangedSubviews.count else {
+            fatalError("Arranged subviews count dont match subview count")
         }
         
-        let sheep = sheeps[indexPath.row]
+        let sheep: Sheep
+        if searchController.isActive && searchController.searchBar.text != "" {
+            sheep = filteredSheeps[indexPath.row]
+        }else {
+            sheep = sheeps[indexPath.row]
+        }
         cell.SheepIDLabel?.text = sheep.sheepID
         
-        for lamb in sheep.lambs {
-            let label = UILabel()
-            label.text = lamb.sheepID
-            cell.LambStackView.addArrangedSubview(label)
+        for (index,lamb) in sheep.lambs.enumerated() {
+            if cell.LambStackView.subviews.count > index{
+                let labelView = cell.LambStackView.arrangedSubviews[index] as! UILabel
+                labelView.text = lamb.sheepID
+            }else{
+                let label = UILabel()
+                label.text = lamb.sheepID
+                cell.LambStackView.addArrangedSubview(label)
+            }
+        }
+        let overCount = cell.LambStackView.subviews.count - sheep.lambs.count
+        if (overCount) > 0 {
+            for index in (sheep.lambs.count...cell.LambStackView.subviews.count-1).reversed() {
+                let view = cell.LambStackView.arrangedSubviews[index]
+                view.removeFromSuperview()
+            }
+            
+        }
+        guard((sheep.lambs.count == cell.LambStackView.subviews.count) && (sheep.lambs.count == cell.LambStackView.arrangedSubviews.count)) else{
+            fatalError("lamb count dont match viewed lambcount")
         }
         return cell
     }
     
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            sheeps.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            Sheep.saveSheeps(sheeps)
+    func filterContentForSearchText(searchText: String, scope: String = "All"){
+        filteredSheeps = sheeps.filter { sheep in
+            for lamb in sheep.lambs {
+                if lamb.sheepID.lowercased().contains(searchText.lowercased()){
+                    return true
+                }
+            }
+            return sheep.sheepID.lowercased().contains(searchText.lowercased())
         }
+        tableView.reloadData()
     }
     
 //    func checkmarkTapped(sender: SheepCell) {
@@ -94,4 +138,29 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
 //        }
 //        
 //    }
+    //EDITING
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if tableView.isEditing {
+            return .delete
+        }
+        
+        return .none
+    }
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            sheeps.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            Sheep.saveSheeps(sheeps)
+        }
+    }
+}
+
+extension SheepListTableViewController: UISearchResultsUpdating{
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchText: searchController.searchBar.text!)
+    }
 }

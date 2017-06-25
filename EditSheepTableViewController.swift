@@ -74,6 +74,7 @@ class EditSheepTableViewController: UITableViewController {
                 cell.notesTextView.text = sheep.notes
             }
             else{
+                cell.sheepIDTextField.placeholder = "Sheep ID"
                 //fatalError("No sheep")
             }
         }else{
@@ -83,6 +84,7 @@ class EditSheepTableViewController: UITableViewController {
                 updateBirthdayLabel(cell: cell)
                 cell.notesTextView.text = lamb.notes
             }else{
+                cell.sheepIDTextField.placeholder = "Lamb ID"
                 //fatalError("No sheep/lambs")
             }
         }

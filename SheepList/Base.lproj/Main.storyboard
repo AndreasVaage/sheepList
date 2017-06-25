@@ -43,22 +43,24 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Twr-Em-Ib3">
-                                            <rect key="frame" x="8" y="37" width="54" height="27"/>
+                                            <rect key="frame" x="16" y="36.5" width="54" height="26.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8rs-a0-KU8">
-                                            <rect key="frame" x="262" y="8" width="105" height="84"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="8rs-a0-KU8">
+                                            <rect key="frame" x="270" y="8" width="89" height="84"/>
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Twr-Em-Ib3" firstAttribute="leading" secondItem="b1F-yM-feY" secondAttribute="leadingMargin" id="7fm-p3-KyW"/>
+                                        <constraint firstItem="Twr-Em-Ib3" firstAttribute="leading" secondItem="b1F-yM-feY" secondAttribute="leadingMargin" constant="8" id="7fm-p3-KyW"/>
                                         <constraint firstItem="8rs-a0-KU8" firstAttribute="top" secondItem="b1F-yM-feY" secondAttribute="topMargin" id="CFw-91-mOD"/>
-                                        <constraint firstItem="8rs-a0-KU8" firstAttribute="leading" secondItem="Twr-Em-Ib3" secondAttribute="trailing" constant="200" id="Pi9-yk-GqF"/>
+                                        <constraint firstItem="Twr-Em-Ib3" firstAttribute="top" relation="greaterThanOrEqual" secondItem="b1F-yM-feY" secondAttribute="topMargin" constant="8" id="Cjj-mD-Lkt"/>
+                                        <constraint firstItem="8rs-a0-KU8" firstAttribute="leading" secondItem="Twr-Em-Ib3" secondAttribute="trailing" priority="250" constant="200" id="Pi9-yk-GqF"/>
                                         <constraint firstItem="Twr-Em-Ib3" firstAttribute="centerY" secondItem="b1F-yM-feY" secondAttribute="centerY" id="Tmi-aC-tYx"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="8rs-a0-KU8" secondAttribute="bottom" id="d99-lc-cO6"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="8rs-a0-KU8" secondAttribute="trailing" id="dZC-Kq-zKx"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="8rs-a0-KU8" secondAttribute="trailing" constant="8" id="dZC-Kq-zKx"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Twr-Em-Ib3" secondAttribute="bottom" constant="8" id="rjR-dN-Bng"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

@@ -15,14 +15,19 @@ class EditSheepTableViewController: UITableViewController {
     var lastAddedLamb: String?
     var numberOfLambs = 0
     
+    let sheepSection = 0
+    let lambSection = 1
+    
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     @IBAction func addLambButtonPressed(_ sender: UIButton) {
+        
         let newIndexPath = IndexPath(row: numberOfLambs ,section: 1)
         numberOfLambs += 1
         tableView.insertRows(at: [newIndexPath], with: .automatic)
         updateLambHeader()
+        updateLambFooter()
         tableView.scrollToBottom(ofSection: 1)
     }
     @IBAction func sheepIDTextEditingChanged(_ sender: UITextField) {
@@ -89,11 +94,9 @@ class EditSheepTableViewController: UITableViewController {
     // Display rows
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditSheepCell") as? EditSheepTableViewCell else {
-            fatalError("Could not dequeue a cell")
-            
-        }
-        if indexPath.section == 0 {
+        let cell = EditSheepTableViewCell()
+        
+        if indexPath.section == sheepSection {
             cell.sheepIDTextField.placeholder = "Sheep ID"
             if let sheep = sheep{
                 cell.sheepIDTextField.text = sheep.sheepID
@@ -239,8 +242,21 @@ class EditSheepTableViewController: UITableViewController {
         return nil
     }
     
+    func updateLambFooter() {
+        let footer = tableView.footerView(forSection: lambSection)
+        let addLambbutton = footer?.subviews.first as! UIButton
+        if numberOfLambs >= 9 {
+            addLambbutton.titleLabel?.text = "max number of lambs"
+            addLambbutton.isEnabled = false
+        }else{
+            addLambbutton.titleLabel?.text = "Register new lamb"
+            addLambbutton.isEnabled = true
+        }
+    }
+    
     func updateLambHeader(){
-        let header = tableView.headerView(forSection: 1)
+        
+        let header = tableView.headerView(forSection: lambSection)
         if numberOfLambs == 1 {
             header?.textLabel?.text = " 1 lamb"
         }else{
@@ -283,6 +299,7 @@ class EditSheepTableViewController: UITableViewController {
             numberOfLambs -= 1
             tableView.deleteRows(at: [indexPath], with: .fade)
             updateLambHeader()
+            updateLambFooter()
         }
     }
 

@@ -178,10 +178,30 @@
         <scene sceneID="7XI-22-jg2">
             <objects>
                 <tableViewController id="lPO-q9-oUr" userLabel="Edit Sheep" customClass="EditSheepTableViewController" customModule="SheepList" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="132" sectionHeaderHeight="28" sectionFooterHeight="28" id="qWX-uP-6AR">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" allowsSelectionDuringEditing="YES" rowHeight="132" sectionHeaderHeight="28" sectionFooterHeight="28" id="qWX-uP-6AR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="XsE-Qd-DUP">
+                            <rect key="frame" x="0.0" y="160" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iqx-rt-h0g">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <state key="normal" title="Register new lamb"/>
+                                    <connections>
+                                        <action selector="addLambButtonPressed:" destination="lPO-q9-oUr" eventType="touchDown" id="NEi-IZ-gbj"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="iqx-rt-h0g" secondAttribute="bottom" id="JX5-1g-AIw"/>
+                                <constraint firstItem="iqx-rt-h0g" firstAttribute="top" secondItem="XsE-Qd-DUP" secondAttribute="top" id="TgO-Hg-GAh"/>
+                                <constraint firstAttribute="trailing" secondItem="iqx-rt-h0g" secondAttribute="trailing" id="gic-Ly-UlX"/>
+                                <constraint firstItem="iqx-rt-h0g" firstAttribute="leading" secondItem="XsE-Qd-DUP" secondAttribute="leading" id="oiX-ps-C47"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditSheepCell" id="Enn-A2-xji" customClass="EditSheepTableViewCell" customModule="SheepList" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="132"/>
@@ -200,6 +220,7 @@
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             <connections>
                                                 <action selector="sheepIDTextEditingChanged:" destination="lPO-q9-oUr" eventType="editingChanged" id="nGo-IZ-Xrn"/>
+                                                <action selector="sheepIDTextEditingFinnished:" destination="lPO-q9-oUr" eventType="editingDidEnd" id="QID-L1-HTQ"/>
                                             </connections>
                                         </textField>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ByV-AB-ejY">
@@ -211,8 +232,8 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
-                                        <datePicker contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="McG-f9-kDg">
-                                            <rect key="frame" x="119" y="77" width="248" height="47"/>
+                                        <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="McG-f9-kDg">
+                                            <rect key="frame" x="64" y="77" width="303" height="47"/>
                                             <date key="date" timeIntervalSinceReferenceDate="519981600.34928602">
                                                 <!--2017-06-24 07:20:00 +0000-->
                                             </date>
@@ -220,8 +241,8 @@
                                                 <action selector="birthdayPickerChanged:" destination="lPO-q9-oUr" eventType="valueChanged" id="tIF-3c-CDu"/>
                                             </connections>
                                         </datePicker>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJN-7X-JCX">
-                                            <rect key="frame" x="14" y="83" width="97" height="40"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJN-7X-JCX">
+                                            <rect key="frame" x="14" y="83" width="42" height="40"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>

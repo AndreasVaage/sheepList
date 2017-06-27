@@ -49,6 +49,13 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
                 selectedSheep = sheeps[indexPath.row]
             }
             detailedSheepViewController.sheep = selectedSheep
+        }else{
+            let navVC = segue.destination as? UINavigationController
+            
+            let addSheeptableVC = navVC?.viewControllers.first as! EditSheepTableViewController
+            if let lastAddedLambID = sheeps.last?.lambs.last?.sheepID{
+            addSheeptableVC.lastAddedLamb = lastAddedLambID
+            }
         }
     }
     
@@ -68,6 +75,7 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
             }
         }
         Sheep.saveSheeps(sheeps)
+        tableView.scrollToBottom(ofSection: 0)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -148,21 +156,6 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         return offset == str1.characters.count
     }
     
-//    bool isSubSequence(char str1[], char str2[], int m, int n)
-//    {
-//    int j = 0; // For index of str1 (or subsequence
-//    
-//    // Traverse str2 and str1, and compare current character
-//    // of str2 with first unmatched char of str1, if matched
-//    // then move ahead in str1
-//    for (int i=0; i<n&&j<m; i++)
-//    if (str1[j] == str2[i])
-//    j++;
-//    
-//    // If all characters of str1 were found in str2
-//    return (j==m);
-//    }
-    
 //    func checkmarkTapped(sender: SheepCell) {
 //        if let indexPath = tableView.indexPath(for: sender) {
 //            let sheep = sheeps[indexPath.row]
@@ -172,6 +165,8 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
 //        }
 //        
 //    }
+    
+    
     //EDITING
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true

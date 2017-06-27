@@ -21,14 +21,14 @@ class EditSheepTableViewController: UITableViewController {
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
+    @IBOutlet weak var addLambButton: UIButton!
     @IBAction func addLambButtonPressed(_ sender: UIButton) {
-        
-        let newIndexPath = IndexPath(row: numberOfLambs ,section: 1)
+        let newIndexPath = IndexPath(row: numberOfLambs ,section: lambSection)
         numberOfLambs += 1
         tableView.insertRows(at: [newIndexPath], with: .automatic)
         updateLambHeader()
         updateLambFooter()
-        tableView.scrollToBottom(ofSection: 1)
+        tableView.scrollToBottom(ofSection: lambSection)
     }
     @IBAction func sheepIDTextEditingChanged(_ sender: UITextField) {
         updateSaveButtonState()
@@ -56,6 +56,7 @@ class EditSheepTableViewController: UITableViewController {
             numberOfLambs = numberOfExistingLambs
         }
         updateSaveButtonState()
+        updateLambFooter()
         //updateLambHeader()
        
 //        for cell in self.tableView.visibleCells as! [EditSheepTableViewCell]{
@@ -82,9 +83,9 @@ class EditSheepTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0:
+        case sheepSection:
             return 1
-        case 1:
+        case lambSection:
             return numberOfLambs
         default:
             return 0
@@ -94,8 +95,10 @@ class EditSheepTableViewController: UITableViewController {
     // Display rows
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = EditSheepTableViewCell()
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditSheepCell") as? EditSheepTableViewCell else {
+            fatalError("Could not dequeue a cell")
+            
+        }
         if indexPath.section == sheepSection {
             cell.sheepIDTextField.placeholder = "Sheep ID"
             if let sheep = sheep{
@@ -189,7 +192,7 @@ class EditSheepTableViewController: UITableViewController {
                 fatalError("There is a wolf in sheepCellClothing")
             }
 
-            if indexPath.section == 0 {
+            if indexPath.section == sheepSection {
                 sheepID = cell.sheepIDTextField.text!
                 birthday = cell.birthdayDatePicker.date
                 notes = cell.notesTextView.text
@@ -232,7 +235,7 @@ class EditSheepTableViewController: UITableViewController {
     //give each section a title
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 1 {
+        if section == lambSection {
             if numberOfLambs == 1 {
                 return " 1 lamb"
             }else{
@@ -243,16 +246,12 @@ class EditSheepTableViewController: UITableViewController {
     }
     
     func updateLambFooter() {
-        let footer = tableView.footerView(forSection: lambSection)
-        guard let addLambbutton = footer?.subviews.first as? UIButton else {
-            fatalError("Could not find footerButton")
-        }
         if numberOfLambs >= 9 {
-            addLambbutton.titleLabel?.text = "max number of lambs"
-            addLambbutton.isEnabled = false
+            addLambButton.titleLabel?.text = "max number of lambs"
+            addLambButton.isEnabled = false
         }else{
-            addLambbutton.titleLabel?.text = "Register new lamb"
-            addLambbutton.isEnabled = true
+            addLambButton.titleLabel?.text = "Register new lamb"
+            addLambButton.isEnabled = true
         }
     }
     
@@ -272,11 +271,11 @@ class EditSheepTableViewController: UITableViewController {
         indexPath: IndexPath) -> CGFloat {
         let normalCellHeight = CGFloat(160)
         switch(indexPath.section) {
-        case 0: //Sheep Cell
+        case sheepSection: //Sheep Cell
             return normalCellHeight
             //return isEndDatePickerHidden ? normalCellHeight :
             //largeCellHeight
-        case 1: //Lamb Cell
+        case lambSection: //Lamb Cell
             return normalCellHeight
             //return isEndDatePickerHidden ? normalCellHeight :
             //largeCellHeight
@@ -286,7 +285,7 @@ class EditSheepTableViewController: UITableViewController {
     
     //EDITING
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == 1 {
+        if indexPath.section == lambSection {
             return true
         }else {
             return false

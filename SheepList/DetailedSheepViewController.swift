@@ -34,8 +34,8 @@ class DetailedSheepViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailedSheepCell") as? DetailedSheepCell else {
             fatalError("Could not dequeue a cell")
-            
         }
+        
         if indexPath.section == 0 {
             if let sheep = sheep{
                 cell.sheepIDTextLabel.text = sheep.sheepID

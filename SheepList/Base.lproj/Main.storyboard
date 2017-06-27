@@ -291,6 +291,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addLambButton" destination="iqx-rt-h0g" id="eLj-YW-G9N"/>
                         <outlet property="saveButton" destination="el9-zf-QT9" id="BC7-T1-yC7"/>
                     </connections>
                 </tableViewController>

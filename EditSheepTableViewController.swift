@@ -244,7 +244,9 @@ class EditSheepTableViewController: UITableViewController {
     
     func updateLambFooter() {
         let footer = tableView.footerView(forSection: lambSection)
-        let addLambbutton = footer?.subviews.first as! UIButton
+        guard let addLambbutton = footer?.subviews.first as? UIButton else {
+            fatalError("Could not find footerButton")
+        }
         if numberOfLambs >= 9 {
             addLambbutton.titleLabel?.text = "max number of lambs"
             addLambbutton.isEnabled = false

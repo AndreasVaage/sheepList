@@ -63,19 +63,21 @@ class DetailedSheepViewController: UITableViewController {
             let editSheepTableViewController = segue.destination
                 as! EditSheepTableViewController
             let indexPath = tableView.indexPathForSelectedRow!
-            var selectedSheep : Sheep? = nil
             if indexPath.section == 0 {
-                selectedSheep = sheep
+                editSheepTableViewController.sheep = sheep!
             }else{
-                selectedSheep = sheep?.lambs[indexPath.row]
+                editSheepTableViewController.sheep = (sheep?.lambs[indexPath.row])!
             }
-            
-            editSheepTableViewController.sheep = selectedSheep
         }
     }
 
-    func updateBirthdayLabel(date: Date, cell: DetailedSheepCell) {
-        cell.birthdayLabel.text = Sheep.birthdayFormatter.string(from: date)
+    func updateBirthdayLabel(date: Date?, cell: DetailedSheepCell) {
+        if let date = date {
+            cell.birthdayLabel.text = Sheep.birthdayFormatter.string(from: date)
+        }else{
+            cell.birthdayLabel.text = "Unknown"
+        }
+        
     }
     //give each section a title
     

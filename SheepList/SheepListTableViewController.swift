@@ -63,16 +63,18 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         guard segue.identifier == "saveUnwind" else { return }
         let sourceViewController = segue.source as! EditSheepTableViewController
         
-        if let sheep = sourceViewController.sheep {
-            if let selectedIndexPath =
-                tableView.indexPathForSelectedRow {
-                sheeps[selectedIndexPath.row] = sheep
-                tableView.reloadRows(at: [selectedIndexPath], with: .none)
-            } else {
-                let newIndexPath = IndexPath(row: sheeps.count, section: 0)
-                sheeps.append(sheep)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-            }
+        let sheep = sourceViewController.sheep
+        guard Sheep.isCorrectFormat(for: sheep) else {
+            fatalError("Trying to save sheep with wrong format")
+        }
+        if let selectedIndexPath =
+            tableView.indexPathForSelectedRow {
+            sheeps[selectedIndexPath.row] = sheep
+            tableView.reloadRows(at: [selectedIndexPath], with: .none)
+        } else {
+            let newIndexPath = IndexPath(row: sheeps.count, section: 0)
+            sheeps.append(sheep)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
         }
         Sheep.saveSheeps(sheeps)
         tableView.scrollToBottom(ofSection: 0)
@@ -128,11 +130,11 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     func filterContentForSearchText(searchText: String, scope: String = "All"){
         filteredSheeps = sheeps.filter { sheep in
             for lamb in sheep.lambs {
-                if subSecuence(is: searchText.lowercased(), subSecuenceOff: lamb.sheepID.lowercased()){
+                if subSecuence(is: searchText.lowercased(), subSecuenceOff: lamb.sheepID!.lowercased()){
                     return true
                 }
             }
-            return subSecuence(is: searchText.lowercased(), subSecuenceOff: sheep.sheepID.lowercased())
+            return subSecuence(is: searchText.lowercased(), subSecuenceOff: sheep.sheepID!.lowercased())
         }
         tableView.reloadData()
     }

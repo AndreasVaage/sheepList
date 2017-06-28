@@ -220,7 +220,6 @@
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             <connections>
                                                 <action selector="sheepIDTextEditingChanged:" destination="lPO-q9-oUr" eventType="editingChanged" id="nGo-IZ-Xrn"/>
-                                                <action selector="sheepIDTextEditingFinnished:" destination="lPO-q9-oUr" eventType="editingDidEnd" id="QID-L1-HTQ"/>
                                             </connections>
                                         </textField>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ByV-AB-ejY">

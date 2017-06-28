@@ -17,8 +17,8 @@ class Sheep: NSObject, NSCoding {
         static let lambs = "lambs"
     }
     
-    var sheepID: String
-    var birthday: Date
+    var sheepID: String?
+    var birthday: Date?
     var notes: String?
     var lambs: [Sheep]
     
@@ -27,15 +27,11 @@ class Sheep: NSObject, NSCoding {
     
     
     required convenience init?(coder aDecoder: NSCoder) {
-        guard let sheepID = aDecoder.decodeObject(forKey:
-            PropertyKey.sheepID) as? String,
-            let birthday = aDecoder.decodeObject(forKey:
-                PropertyKey.birthday) as? Date,
-            let lambs = aDecoder.decodeObject(forKey:
-                PropertyKey.lambs) as? [Sheep] else { return nil }
+        guard let lambs = aDecoder.decodeObject(forKey: PropertyKey.lambs) as? [Sheep] else { return nil }
         
-        let notes = aDecoder.decodeObject(forKey: PropertyKey.notes)
-            as? String
+        let sheepID = aDecoder.decodeObject(forKey: PropertyKey.sheepID) as? String
+        let birthday = aDecoder.decodeObject(forKey: PropertyKey.birthday) as? Date
+        let notes = aDecoder.decodeObject(forKey: PropertyKey.notes) as? String
         
         self.init(sheepID: sheepID, birthday: birthday, notes: notes, lambs: lambs)
     }
@@ -48,20 +44,21 @@ class Sheep: NSObject, NSCoding {
         aCoder.encode(lambs, forKey: PropertyKey.lambs)
     }
     
-    init(sheepID: String) {
-        guard !sheepID.isEmpty else {
-            fatalError("Sheep need a nonempty integer sheepID")
-        }
+    init(sheepID: String?) {
         self.sheepID = sheepID
-        self.birthday = Date()
+        self.birthday = nil
+        self.notes = nil
+        self.lambs = []
+    }
+    init(sheepID: String?, birthday: Date?) {
+        self.sheepID = sheepID
+        self.birthday = birthday
         self.notes = nil
         self.lambs = []
     }
     
-    init(sheepID: String, birthday: Date, notes: String?, lambs: [Sheep]){
-        guard !sheepID.isEmpty else {
-            fatalError("Sheep need a nonempty integer sheepID")
-        }
+    init(sheepID: String?, birthday: Date?, notes: String?, lambs: [Sheep]){
+        
         self.sheepID = sheepID
         self.birthday = birthday
         self.notes = notes
@@ -90,6 +87,17 @@ class Sheep: NSObject, NSCoding {
              Sheep(sheepID: "30013")])
         
         return [sheep1, sheep2, sheep3]
+    }
+    
+    static func isCorrectFormat(for sheep: Sheep) -> Bool{
+        guard let sheepID = sheep.sheepID else { return false }
+        guard sheepID != "" else { return false }
+        for lamb in sheep.lambs {
+            guard let lambID = lamb.sheepID else { return false }
+            guard lambID != "" else { return false }
+            guard lamb.lambs == [] else { return false }
+        }
+        return true
     }
     
     

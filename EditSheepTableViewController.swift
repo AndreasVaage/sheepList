@@ -11,9 +11,8 @@ import UIKit
 class EditSheepTableViewController: UITableViewController {
 
     // MARK: - Table view data source
-    var sheep: Sheep?
+    var sheep = Sheep(sheepID: nil)
     var lastAddedLamb: String?
-    var numberOfLambs = 0
     
     let sheepSection = 0
     let lambSection = 1
@@ -23,50 +22,56 @@ class EditSheepTableViewController: UITableViewController {
     
     @IBOutlet weak var addLambButton: UIButton!
     @IBAction func addLambButtonPressed(_ sender: UIButton) {
-        let newIndexPath = IndexPath(row: numberOfLambs ,section: lambSection)
-        numberOfLambs += 1
+        let newIndexPath = IndexPath(row: sheep.lambs.count ,section: lambSection)
+        var sheepID: String? = nil
+        if lastAddedLamb != nil {
+            if let lastAddedLambInt = Int(lastAddedLamb!){
+                lastAddedLamb = String(describing: lastAddedLambInt+1)
+                sheepID = lastAddedLamb
+            }
+        }
+        sheep.lambs.append(Sheep(sheepID: sheepID, birthday: Date()))
         tableView.insertRows(at: [newIndexPath], with: .automatic)
         updateLambHeader()
         updateLambFooter()
         tableView.scrollToBottom(ofSection: lambSection)
     }
     @IBAction func sheepIDTextEditingChanged(_ sender: UITextField) {
+        guard let cell = sender.superview?.superview as? EditSheepTableViewCell else{
+            fatalError("Unknown cell")
+        }
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            fatalError("Unknown indexpath")
+        }
+        guard let enteredText = sender.text else {
+            return // nothing was entered
+        }
+        
+        switch indexPath.section {
+        case sheepSection:
+            sheep.sheepID = enteredText
+        case lambSection:
+            sheep.lambs[indexPath.row].sheepID = enteredText
+            lastAddedLamb = enteredText
+        default:
+            fatalError("Unknown section")
+        }
         updateSaveButtonState()
     }
+    
+    
     @IBAction func birthdayPickerChanged(_ sender: UIDatePicker) {
         let cell = sender.superview?.superview as! EditSheepTableViewCell
-        updateBirthdayLabel(cell: cell)
+        updateBirthdayLabel(cell: cell, date: sender.date)
     }
-    @IBAction func sheepIDTextEditingFinnished(_ sender: UITextField){
-        if let cell = sender.superview?.superview as? EditSheepTableViewCell{
-            if tableView.indexPath(for: cell)?.section == 1{
-                lastAddedLamb = sender.text
-            }
-        }else{
-            print("DID nOT WORK")
-        }
-    }
-
     
     var isDatePickerHidden = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let numberOfExistingLambs = sheep?.lambs.count{
-            numberOfLambs = numberOfExistingLambs
-        }
         updateSaveButtonState()
         updateLambFooter()
         //updateLambHeader()
-       
-//        for cell in self.tableView.visibleCells as! [EditSheepTableViewCell]{
-//            updateBirthdayLabel(cell: cell)
-//        }
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
@@ -86,7 +91,7 @@ class EditSheepTableViewController: UITableViewController {
         case sheepSection:
             return 1
         case lambSection:
-            return numberOfLambs
+            return sheep.lambs.count
         default:
             return 0
         }
@@ -97,156 +102,81 @@ class EditSheepTableViewController: UITableViewController {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditSheepCell") as? EditSheepTableViewCell else {
             fatalError("Could not dequeue a cell")
-            
+        
         }
-        if indexPath.section == sheepSection {
+        var birthday: Date? = nil
+        switch indexPath.section {
+        case sheepSection:
             cell.sheepIDTextField.placeholder = "Sheep ID"
-            if let sheep = sheep{
-                cell.sheepIDTextField.text = sheep.sheepID
-                cell.birthdayDatePicker.date = sheep.birthday
-                cell.notesTextView.text = sheep.notes
+            cell.sheepIDTextField.text = sheep.sheepID
+            cell.notesTextView.text = sheep.notes
+
+            if let sheepBirthday = sheep.birthday {
+                cell.birthdayDatePicker.date = sheepBirthday
+                birthday = sheepBirthday
             }
-        }else{
+        case lambSection:
             cell.sheepIDTextField.placeholder = "Lamb ID"
-            if lastAddedLamb != nil && cell.sheepIDTextField.text == "" {
-                if let lastAddedLambInt = Int(lastAddedLamb!){
-                    lastAddedLamb = String(describing: lastAddedLambInt+1)
-                    cell.sheepIDTextField.text = lastAddedLamb
-                }
+            cell.sheepIDTextField.text = sheep.lambs[indexPath.row].sheepID
+            cell.notesTextView.text = sheep.lambs[indexPath.row].notes
+            
+            if let lambBirthday = sheep.lambs[indexPath.row].birthday {
+                cell.birthdayDatePicker.date = lambBirthday
+                birthday = lambBirthday
             }
             
-            if let lambs = sheep?.lambs {
-                if lambs.count > indexPath.row {
-                    let lamb = lambs[indexPath.row]
-                    cell.sheepIDTextField.text = lamb.sheepID
-                    cell.birthdayDatePicker.date = lamb.birthday
-                    cell.notesTextView.text = lamb.notes
-                }
-            }
+        default:
+            fatalError("Unknown section")
         }
-        updateBirthdayLabel(cell: cell)
+        updateBirthdayLabel(cell: cell, date: birthday )
         return cell
     }
     
-    func updateBirthdayLabel(cell: EditSheepTableViewCell) {
-        let date = cell.birthdayDatePicker.date
-        cell.birthdayLabel.text = Sheep.birthdayFormatter.string(from: date)
+    func updateBirthdayLabel(cell: EditSheepTableViewCell, date: Date?) {
+        if let date = date{
+            cell.birthdayLabel.text = Sheep.birthdayFormatter.string(from: date)
+        }else{
+        cell.birthdayLabel.text = "Unknown"
+        }
     }
 
     
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-    
-    // Select a row
-    
-    // MARK: - Navigation
+        // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
         guard segue.identifier == "saveUnwind" else { return }
-        var sheepID: String?
-        var birthday: Date?
-        var notes: String?
-        var lambs = [Sheep]()
-        guard let indexPaths = self.tableView.indexPathsForVisibleRows else {
-            fatalError("There is a nil in our indexPaths!")
+        guard Sheep.isCorrectFormat(for: sheep) else {
+            fatalError("Trying to save sheep with wrong format")
         }
-        
-        for indexPath in indexPaths {
-            guard let cell = self.tableView.cellForRow(at: indexPath) as? EditSheepTableViewCell else {
-                fatalError("There is a wolf in sheepCellClothing")
-            }
-
-            if indexPath.section == sheepSection {
-                sheepID = cell.sheepIDTextField.text!
-                birthday = cell.birthdayDatePicker.date
-                notes = cell.notesTextView.text
-            }else{
-                guard let lambID = cell.sheepIDTextField.text else {
-                    fatalError("LambID is nil when trying to save")
-                }
-                let birthday = cell.birthdayDatePicker.date
-                let notes = cell.notesTextView.text
-                lambs.append(Sheep(sheepID: lambID, birthday: birthday,notes: notes,lambs: []))
-            }
-        }
-        if let lastLambID = lambs.last?.sheepID{
-            lastAddedLamb = lastLambID
-        }
-        
-        sheep = Sheep(sheepID: sheepID!, birthday: birthday!, notes: notes, lambs: lambs)
     }
     
     func updateSaveButtonState() {
-        guard let indexPaths = tableView.indexPathsForVisibleRows  else {
+        if Sheep.isCorrectFormat(for: sheep) {
+            saveButton.isEnabled = true
+        }else{
             saveButton.isEnabled = false
-            print("Skipped cheking that text was entered")
-            return
         }
-        var state = false
-        for indexPath in indexPaths {
-            let cell = tableView.cellForRow(at: indexPath) as! EditSheepTableViewCell
-            let text = cell.sheepIDTextField.text ?? ""
-            if text.isEmpty {
-                state = false
-                break
-            }else{
-                state = true
-            }
-        }
-        saveButton.isEnabled = state
     }
     
     //give each section a title
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == lambSection {
-            if numberOfLambs == 1 {
+            if sheep.lambs.count == 1 {
                 return " 1 lamb"
             }else{
-                return  String(numberOfLambs) + " lambs"
+                return  String(sheep.lambs.count) + " lambs"
             }
         }
         return nil
     }
     
     func updateLambFooter() {
-        if numberOfLambs >= 9 {
+        if sheep.lambs.count >= 9 {
             addLambButton.titleLabel?.text = "max number of lambs"
             addLambButton.isEnabled = false
         }else{
@@ -258,11 +188,15 @@ class EditSheepTableViewController: UITableViewController {
     func updateLambHeader(){
         
         let header = tableView.headerView(forSection: lambSection)
-        if numberOfLambs == 1 {
-            header?.textLabel?.text = " 1 lamb"
-        }else{
-            header?.textLabel?.text = String(numberOfLambs) + " lambs"
+        let numberOfLambs = sheep.lambs.count
+        var headerText = String(numberOfLambs) + " lamb"
+        if numberOfLambs != 1 {
+            headerText += "s"
         }
+        if numberOfLambs == 9 {
+            headerText += " (max)"
+        }
+        header?.textLabel?.text = headerText
         header?.textLabel?.sizeToFit()
     }
     
@@ -297,7 +231,7 @@ class EditSheepTableViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            numberOfLambs -= 1
+            sheep.lambs.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             updateLambHeader()
             updateLambFooter()

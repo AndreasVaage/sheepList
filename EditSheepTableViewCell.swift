@@ -13,6 +13,4 @@ class EditSheepTableViewCell: UITableViewCell {
 
     @IBOutlet weak var notesTextView: UITextView!
     
-    @IBOutlet weak var birthdayDatePicker: UIDatePicker!
-    @IBOutlet weak var birthdayLabel: UILabel!
 }

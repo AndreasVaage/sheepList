@@ -154,26 +154,6 @@
             </objects>
             <point key="canvasLocation" x="365.60000000000002" y="437.63118440779613"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="RNP-yI-9Xv">
-            <objects>
-                <navigationController id="yL3-tr-JT4" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mQc-Wo-BNZ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="uLZ-3z-Rl1">
-                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="Qdg-6d-q1Y" kind="relationship" relationship="rootViewController" id="mgf-lE-ZST"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ch9-Vh-2TT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="366" y="-296"/>
-        </scene>
         <!--Edit Sheep-->
         <scene sceneID="7XI-22-jg2">
             <objects>
@@ -183,7 +163,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="XsE-Qd-DUP">
-                            <rect key="frame" x="0.0" y="292" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="406" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iqx-rt-h0g">
@@ -203,55 +183,37 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditSheepCell" id="Enn-A2-xji" customClass="EditSheepTableViewCell" customModule="SheepList" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="132"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditSheepCell" rowHeight="61" id="Enn-A2-xji" customClass="EditSheepTableViewCell" customModule="SheepList" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="61"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Enn-A2-xji" id="jm5-0Y-rdc">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="131.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Sheep ID" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d50-Zo-roD">
-                                            <rect key="frame" x="136" y="8" width="103" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="goK-rD-bQi"/>
-                                            </constraints>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Sheep ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d50-Zo-roD">
+                                            <rect key="frame" x="124.5" y="15.5" width="126" height="30"/>
                                             <nil key="textColor"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             <connections>
                                                 <action selector="sheepIDTextEditingChanged:" destination="lPO-q9-oUr" eventType="editingChanged" id="nGo-IZ-Xrn"/>
                                             </connections>
                                         </textField>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ByV-AB-ejY">
-                                            <rect key="frame" x="8" y="38" width="359" height="42"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="42" id="VxR-tV-yFY"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="d50-Zo-roD" firstAttribute="top" secondItem="jm5-0Y-rdc" secondAttribute="topMargin" id="Hg9-al-vfM"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="d50-Zo-roD" secondAttribute="trailing" constant="128" id="IMM-QL-K4J"/>
-                                        <constraint firstItem="ByV-AB-ejY" firstAttribute="leading" secondItem="jm5-0Y-rdc" secondAttribute="leadingMargin" id="Qpy-Su-QF8"/>
-                                        <constraint firstItem="ByV-AB-ejY" firstAttribute="top" secondItem="d50-Zo-roD" secondAttribute="bottom" id="ffG-th-DwB"/>
-                                        <constraint firstItem="ByV-AB-ejY" firstAttribute="trailing" secondItem="jm5-0Y-rdc" secondAttribute="trailingMargin" id="mRX-aF-v4B"/>
-                                        <constraint firstItem="d50-Zo-roD" firstAttribute="centerX" secondItem="jm5-0Y-rdc" secondAttribute="centerX" id="vff-QF-G1C"/>
-                                        <constraint firstItem="d50-Zo-roD" firstAttribute="leading" secondItem="jm5-0Y-rdc" secondAttribute="leadingMargin" constant="128" id="xd4-Vn-pES"/>
+                                        <constraint firstItem="d50-Zo-roD" firstAttribute="centerY" secondItem="jm5-0Y-rdc" secondAttribute="centerY" id="MEg-fM-I5d"/>
+                                        <constraint firstItem="d50-Zo-roD" firstAttribute="centerX" secondItem="jm5-0Y-rdc" secondAttribute="centerX" id="RvJ-yw-Paz"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="notesTextView" destination="ByV-AB-ejY" id="Gvm-JG-g1E"/>
                                     <outlet property="sheepIDTextField" destination="d50-Zo-roD" id="SFq-KV-X4p"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DateCell" id="s9k-k5-iE8" customClass="DateTVCell" customModule="SheepList" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="160" width="375" height="132"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DateCell" rowHeight="141" id="s9k-k5-iE8" customClass="DateTVCell" customModule="SheepList" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="89" width="375" height="141"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s9k-k5-iE8" id="qgK-v4-W87">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="131.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="140.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Birthday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdA-vP-n2u">
@@ -294,6 +256,75 @@
                                     <outlet property="dateLabel" destination="1XL-Ks-oOg" id="3iN-4s-00b"/>
                                     <outlet property="datePicker" destination="OlC-gz-GwR" id="9p8-zW-odz"/>
                                     <outlet property="descriptionLabel" destination="AdA-vP-n2u" id="mpK-Un-mXA"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TextViewCell" id="Hbf-Oe-xaj" customClass="TextViewCell" customModule="SheepList" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="230" width="375" height="132"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Hbf-Oe-xaj" id="qwb-fN-MCP">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="131.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ByV-AB-ejY">
+                                            <rect key="frame" x="8" y="0.0" width="359" height="131.5"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="ByV-AB-ejY" firstAttribute="leading" secondItem="qwb-fN-MCP" secondAttribute="leadingMargin" id="3Co-BR-lbg"/>
+                                        <constraint firstItem="ByV-AB-ejY" firstAttribute="top" secondItem="qwb-fN-MCP" secondAttribute="top" id="ExU-or-966"/>
+                                        <constraint firstAttribute="bottom" secondItem="ByV-AB-ejY" secondAttribute="bottom" id="HD8-7k-ni2"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="ByV-AB-ejY" secondAttribute="trailing" id="qRz-SD-KKG"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="notesTextView" destination="ByV-AB-ejY" id="zJ6-ux-HOr"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LambCell" rowHeight="44" id="tif-Rf-9Do" customClass="LambCell" customModule="SheepList" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="362" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tif-Rf-9Do" id="thA-k5-Ttq">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Lamb ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="p1o-U1-bv3">
+                                            <rect key="frame" x="16" y="7" width="120.5" height="30"/>
+                                            <nil key="textColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <action selector="sheepIDTextEditingChanged:" destination="lPO-q9-oUr" eventType="editingDidEnd" id="UQF-Ph-oVs"/>
+                                            </connections>
+                                        </textField>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abr-qG-fgN">
+                                            <rect key="frame" x="317" y="11.5" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Birthday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lci-Gj-J4u">
+                                            <rect key="frame" x="195" y="11" width="64.5" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="Abr-qG-fgN" secondAttribute="trailing" constant="16" id="64V-k5-VUk"/>
+                                        <constraint firstItem="Abr-qG-fgN" firstAttribute="leading" secondItem="lci-Gj-J4u" secondAttribute="trailing" constant="57.5" id="HHD-ux-IIp"/>
+                                        <constraint firstItem="Abr-qG-fgN" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="N4d-24-MMc"/>
+                                        <constraint firstItem="p1o-U1-bv3" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="NxX-zm-Mld"/>
+                                        <constraint firstItem="lci-Gj-J4u" firstAttribute="leading" secondItem="p1o-U1-bv3" secondAttribute="trailing" constant="58.5" id="PKY-gg-YKK"/>
+                                        <constraint firstItem="p1o-U1-bv3" firstAttribute="leading" secondItem="thA-k5-Ttq" secondAttribute="leadingMargin" constant="8" id="ogd-Q2-okW"/>
+                                        <constraint firstItem="lci-Gj-J4u" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="sU4-PR-XJC"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="DateLabel" destination="Abr-qG-fgN" id="rte-2a-waH"/>
+                                    <outlet property="lambIDLabel" destination="p1o-U1-bv3" id="Kwp-PW-Vkw"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -342,7 +373,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Raw-KN-lqG"/>
-        <segue reference="50e-fu-GHb"/>
+        <segue reference="JI2-yO-Hdo"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -13,7 +13,7 @@ class EditSheepTableViewController: UITableViewController {
     // MARK: - Table view data source
     var sheep = Sheep(sheepID: nil)
     var lastAddedLamb: String?
-    var isDatePickerHidden = [Bool]()
+    var isDatePickerHidden = true
     
     let sheepSection = 0
     let lambSection = 1
@@ -32,16 +32,13 @@ class EditSheepTableViewController: UITableViewController {
             }
         }
         sheep.lambs.append(Sheep(sheepID: sheepID, birthday: Date()))
-        isDatePickerHidden.append(true)
-        var newDateIndexPath = newIndexPath
-        newDateIndexPath.row = newIndexPath.row + 1
-        tableView.insertRows(at: [newIndexPath,newDateIndexPath], with: .automatic)
+        tableView.insertRows(at: [newIndexPath], with: .automatic)
         updateLambHeader()
         updateLambFooter()
         tableView.scrollToBottom(ofSection: lambSection)
     }
     @IBAction func sheepIDTextEditingChanged(_ sender: UITextField) {
-        guard let cell = sender.superview?.superview as? EditSheepTableViewCell else{
+        guard let cell = sender.superview?.superview as? UITableViewCell else{
             fatalError("Unknown cell")
         }
         guard let indexPath = tableView.indexPath(for: cell) else {
@@ -65,13 +62,11 @@ class EditSheepTableViewController: UITableViewController {
     
     
     @IBAction func birthdayPickerChanged(_ sender: UIDatePicker) {
-        let cell = sender.superview?.superview as! DateTVCell
-        updateBirthdayLabel(cell: cell, date: sender.date)
+        updateBirthdayLabel(date: sender.date)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        isDatePickerHidden.append(true)
         updateSaveButtonState()
         updateLambFooter()
         //updateLambHeader()
@@ -92,9 +87,9 @@ class EditSheepTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case sheepSection:
-            return 2
+            return 3
         case lambSection:
-            return sheep.lambs.count*2
+            return sheep.lambs.count
         default:
             return 0
         }
@@ -103,52 +98,50 @@ class EditSheepTableViewController: UITableViewController {
     // Display rows
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.row % 2 == 1{ // datepicker cell
+        switch indexPath{
+        case [sheepSection,0]: // sheepID
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditSheepCell") as? EditSheepTableViewCell else {
+                fatalError("Could not dequeue a cell")
+            }
+            cell.sheepIDTextField.text = sheep.sheepID
+            return cell
+        case [sheepSection,1]: //datepicker
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell") as? DateTVCell else {
                 fatalError("Could not dequeue a cell")
             }
-            var tmp_sheep: Sheep?
-            switch indexPath.section {
-            case sheepSection:
-                tmp_sheep = sheep
-            case lambSection:
-                tmp_sheep = sheep.lambs[(indexPath.row+1)/2-1]
-            default:
-                fatalError("Unknown section")
-            }
-            if let sheepBirthday = tmp_sheep?.birthday {
+            if let sheepBirthday = sheep.birthday {
                 cell.datePicker.date = sheepBirthday
-
+                cell.dateLabel.text = Sheep.birthdayFormatter.string(from: sheepBirthday)
+            }else{
+                cell.dateLabel.text = "Unknown"
             }
-             updateBirthdayLabel(cell: cell, date: tmp_sheep?.birthday)
+            return cell
+        case [sheepSection,2]: // notes
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "TextViewCell") as? TextViewCell else {
+                fatalError("Could not dequeue a cell")
+            }
+            cell.notesTextView.text = sheep.notes
+            cell.notesTextView.delegate = self
+            return cell
+        default: // lambs
+            print("section \(indexPath.section)")
+            print("row \(indexPath.row)")
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "LambCell") as? LambCell else {
+                fatalError("Could not dequeue a cell")
+            }
+            
+            cell.lambIDLabel.text = sheep.lambs[indexPath.row].sheepID
+            if let sheepBirthday = sheep.lambs[indexPath.row].birthday {
+                cell.DateLabel.text = Sheep.birthdayFormatter.string(from: sheepBirthday)
+            }else{
+                cell.DateLabel.text = "Unknown"
+            }
             return cell
         }
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditSheepCell") as? EditSheepTableViewCell else {
-            fatalError("Could not dequeue a cell")
-        
-        }
-        
-        switch indexPath.section {
-        case sheepSection:
-            cell.sheepIDTextField.placeholder = "Sheep ID"
-            cell.sheepIDTextField.text = sheep.sheepID
-            cell.notesTextView.text = sheep.notes
-        case lambSection:
-            cell.sheepIDTextField.placeholder = "Lamb ID"
-            cell.sheepIDTextField.text = sheep.lambs[indexPath.row/2].sheepID
-            cell.notesTextView.text = sheep.lambs[indexPath.row/2].notes
-        default:
-            fatalError("Unknown section")
-        }
-        return cell
     }
-    func datePickerCell(for cell: EditSheepTableViewCell)-> DateTVCell{
-        var indexPath = tableView.indexPath(for: cell)
-        indexPath?.row = (indexPath?.row)! + 1
-        return tableView.cellForRow(at: indexPath!) as! DateTVCell
-    }
-    func updateBirthdayLabel(cell: DateTVCell, date: Date?) {
+    
+    func updateBirthdayLabel(date: Date?) {
+        guard let cell = tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as? DateTVCell else{fatalError("Wrong cell")}
         if let date = date{
             cell.dateLabel.text = Sheep.birthdayFormatter.string(from: date)
         }else{
@@ -217,34 +210,43 @@ class EditSheepTableViewController: UITableViewController {
     }
     // select cell
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let pickerIndex = (indexPath.row+1)/2 - 1
-        if indexPath.row % 2 == 1 {
-            isDatePickerHidden[pickerIndex] = !isDatePickerHidden[pickerIndex]
-            let cell = tableView.cellForRow(at: indexPath) as! DateTVCell
-            
-            let color = isDatePickerHidden[pickerIndex] ? .black : tableView.tintColor
-            cell.dateLabel.textColor = color
-            cell.descriptionLabel.textColor = color
-            
-            tableView.beginUpdates()
-            tableView.endUpdates()
+        switch indexPath.section {
+        case sheepSection:
+            if indexPath.row == 1 {
+                isDatePickerHidden = !isDatePickerHidden
+                let cell = tableView.cellForRow(at: indexPath) as! DateTVCell
+                let color = isDatePickerHidden ? .black : tableView.tintColor
+                cell.dateLabel.textColor = color
+                cell.descriptionLabel.textColor = color
+                
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }
+        case lambSection:
+            break
+
+        default:
+            break
         }
     }
     
     //set row higth for each cell
     override func tableView(_ tableView: UITableView, heightForRowAt
         indexPath: IndexPath) -> CGFloat {
-        let smallCellHeight = CGFloat(44)
-        let normalCellHeight = CGFloat(160)
+        let headerCellHeight = CGFloat(60)
+        let normalCellHeight = CGFloat(44)
         let largeCellHeight = CGFloat(200)
-        if indexPath.row % 2 == 0 { // sheep/lamb cell
+        
+        switch indexPath {
+        case [sheepSection,0]:
+            return headerCellHeight
+        case [sheepSection,1]:
+            return isDatePickerHidden ? normalCellHeight : largeCellHeight
+        case [sheepSection,2]:
+            tableView.estimatedRowHeight = normalCellHeight
+            return UITableViewAutomaticDimension
+        default:
             return normalCellHeight
-        }else{ //datePicker cell
-            if indexPath.section == sheepSection{
-                return isDatePickerHidden[0] ? smallCellHeight : largeCellHeight
-            }else{
-            return isDatePickerHidden[(indexPath.row+1)/2 - 1] ? smallCellHeight : largeCellHeight
-            }
         }
     }
     
@@ -262,16 +264,12 @@ class EditSheepTableViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            var dateIndexPath = indexPath
-            dateIndexPath.row = indexPath.row + 1
             sheep.lambs.remove(at: indexPath.row)
-            isDatePickerHidden.remove(at: dateIndexPath.row)
-            tableView.deleteRows(at: [indexPath, dateIndexPath], with: .fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
             updateLambHeader()
             updateLambFooter()
         }
     }
-
 }
 
 extension UITableView {
@@ -281,5 +279,12 @@ extension UITableView {
         
         let indexPath = IndexPath(row: rows - 1, section: section)
         self.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
+}
+
+extension EditSheepTableViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
 }

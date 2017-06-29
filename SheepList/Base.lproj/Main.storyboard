@@ -266,17 +266,17 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ByV-AB-ejY">
-                                            <rect key="frame" x="8" y="0.0" width="359" height="131.5"/>
+                                            <rect key="frame" x="16" y="0.0" width="343" height="131.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ByV-AB-ejY" firstAttribute="leading" secondItem="qwb-fN-MCP" secondAttribute="leadingMargin" id="3Co-BR-lbg"/>
+                                        <constraint firstItem="ByV-AB-ejY" firstAttribute="leading" secondItem="qwb-fN-MCP" secondAttribute="leadingMargin" constant="8" id="3Co-BR-lbg"/>
                                         <constraint firstItem="ByV-AB-ejY" firstAttribute="top" secondItem="qwb-fN-MCP" secondAttribute="top" id="ExU-or-966"/>
                                         <constraint firstAttribute="bottom" secondItem="ByV-AB-ejY" secondAttribute="bottom" id="HD8-7k-ni2"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="ByV-AB-ejY" secondAttribute="trailing" id="qRz-SD-KKG"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="ByV-AB-ejY" secondAttribute="trailing" constant="8" id="qRz-SD-KKG"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -291,7 +291,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Lamb ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="p1o-U1-bv3">
-                                            <rect key="frame" x="16" y="7" width="120.5" height="30"/>
+                                            <rect key="frame" x="16" y="7" width="95.5" height="30"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <textInputTraits key="textInputTraits"/>
@@ -305,8 +305,8 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Birthday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lci-Gj-J4u">
-                                            <rect key="frame" x="195" y="11" width="64.5" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Birthday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a8p-v2-mx6">
+                                            <rect key="frame" x="155.5" y="12" width="64.5" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -314,12 +314,11 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="Abr-qG-fgN" secondAttribute="trailing" constant="16" id="64V-k5-VUk"/>
-                                        <constraint firstItem="Abr-qG-fgN" firstAttribute="leading" secondItem="lci-Gj-J4u" secondAttribute="trailing" constant="57.5" id="HHD-ux-IIp"/>
+                                        <constraint firstItem="a8p-v2-mx6" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="MHc-oV-9cN"/>
                                         <constraint firstItem="Abr-qG-fgN" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="N4d-24-MMc"/>
                                         <constraint firstItem="p1o-U1-bv3" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="NxX-zm-Mld"/>
-                                        <constraint firstItem="lci-Gj-J4u" firstAttribute="leading" secondItem="p1o-U1-bv3" secondAttribute="trailing" constant="58.5" id="PKY-gg-YKK"/>
+                                        <constraint firstItem="a8p-v2-mx6" firstAttribute="centerX" secondItem="thA-k5-Ttq" secondAttribute="centerX" id="dZA-Q8-JKH"/>
                                         <constraint firstItem="p1o-U1-bv3" firstAttribute="leading" secondItem="thA-k5-Ttq" secondAttribute="leadingMargin" constant="8" id="ogd-Q2-okW"/>
-                                        <constraint firstItem="lci-Gj-J4u" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="sU4-PR-XJC"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

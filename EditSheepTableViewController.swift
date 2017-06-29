@@ -136,8 +136,8 @@ class EditSheepTableViewController: UITableViewController {
             cell.notesTextView.text = sheep.notes
         case lambSection:
             cell.sheepIDTextField.placeholder = "Lamb ID"
-            cell.sheepIDTextField.text = sheep.lambs[indexPath.row].sheepID
-            cell.notesTextView.text = sheep.lambs[indexPath.row].notes
+            cell.sheepIDTextField.text = sheep.lambs[indexPath.row/2].sheepID
+            cell.notesTextView.text = sheep.lambs[indexPath.row/2].notes
         default:
             fatalError("Unknown section")
         }
@@ -240,8 +240,11 @@ class EditSheepTableViewController: UITableViewController {
         if indexPath.row % 2 == 0 { // sheep/lamb cell
             return normalCellHeight
         }else{ //datePicker cell
-            
+            if indexPath.section == sheepSection{
+                return isDatePickerHidden[0] ? smallCellHeight : largeCellHeight
+            }else{
             return isDatePickerHidden[(indexPath.row+1)/2 - 1] ? smallCellHeight : largeCellHeight
+            }
         }
     }
     

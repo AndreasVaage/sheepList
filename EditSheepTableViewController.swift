@@ -136,6 +136,7 @@ class EditSheepTableViewController: UITableViewController {
             }else{
                 cell.DateLabel.text = "Unknown"
             }
+            cell.accessoryType = UITableViewCellAccessoryType.detailDisclosureButton
             return cell
         }
     }

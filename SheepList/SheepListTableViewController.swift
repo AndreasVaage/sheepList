@@ -124,6 +124,7 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         guard((sheep.lambs.count == cell.LambStackView.subviews.count) && (sheep.lambs.count == cell.LambStackView.arrangedSubviews.count)) else{
             fatalError("lamb count dont match viewed lambcount")
         }
+        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         return cell
     }
     

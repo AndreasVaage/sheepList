@@ -55,6 +55,7 @@ class DetailedSheepViewController: UITableViewController {
                 fatalError("No sheep/lambs")
             }
         }
+        cell.accessoryType = UITableViewCellAccessoryType.detailDisclosureButton
         return cell
     }
     

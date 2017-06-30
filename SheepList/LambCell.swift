@@ -8,7 +8,7 @@
 import UIKit
 
 class LambCell: UITableViewCell {
-
+    
     @IBOutlet weak var lambIDLabel: UITextField!
     @IBOutlet weak var DateLabel: UILabel!
 }

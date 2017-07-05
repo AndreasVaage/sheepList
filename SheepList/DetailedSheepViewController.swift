@@ -10,7 +10,8 @@ import UIKit
 
 class DetailedSheepViewController: UITableViewController {
     var sheep: Sheep?
-
+    var lastAddedLamb: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -55,7 +56,7 @@ class DetailedSheepViewController: UITableViewController {
                 fatalError("No sheep/lambs")
             }
         }
-        cell.accessoryType = UITableViewCellAccessoryType.detailDisclosureButton
+        cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         return cell
     }
     
@@ -69,6 +70,7 @@ class DetailedSheepViewController: UITableViewController {
             }else{
                 editSheepTableViewController.sheep = (sheep?.lambs[indexPath.row])!
             }
+            editSheepTableViewController.lastAddedLamb = lastAddedLamb
         }
     }
 

@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -190,8 +191,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Sheep ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d50-Zo-roD">
-                                            <rect key="frame" x="124.5" y="15.5" width="126" height="30"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Sheep ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d50-Zo-roD">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="60.5"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -201,8 +202,10 @@
                                         </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="d50-Zo-roD" firstAttribute="centerY" secondItem="jm5-0Y-rdc" secondAttribute="centerY" id="MEg-fM-I5d"/>
-                                        <constraint firstItem="d50-Zo-roD" firstAttribute="centerX" secondItem="jm5-0Y-rdc" secondAttribute="centerX" id="RvJ-yw-Paz"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="d50-Zo-roD" secondAttribute="trailing" constant="8" id="Mvn-8z-qf4"/>
+                                        <constraint firstAttribute="bottom" secondItem="d50-Zo-roD" secondAttribute="bottom" id="ZQ5-aD-gHC"/>
+                                        <constraint firstItem="d50-Zo-roD" firstAttribute="top" secondItem="jm5-0Y-rdc" secondAttribute="top" id="cu2-kE-Fjx"/>
+                                        <constraint firstItem="d50-Zo-roD" firstAttribute="leading" secondItem="jm5-0Y-rdc" secondAttribute="leadingMargin" constant="8" id="rQO-OH-tqn"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -216,14 +219,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="140.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Birthday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdA-vP-n2u">
-                                            <rect key="frame" x="16" y="11" width="64.5" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="OlC-gz-GwR">
-                                            <rect key="frame" x="0.0" y="31.5" width="375" height="165"/>
+                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="OlC-gz-GwR">
+                                            <rect key="frame" x="8" y="31.5" width="359" height="165"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="165" id="vJT-mB-I7g"/>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="165" id="wjD-oD-7Gs"/>
@@ -236,26 +233,23 @@
                                             </connections>
                                         </datePicker>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1XL-Ks-oOg">
-                                            <rect key="frame" x="317" y="11" width="42" height="20.5"/>
+                                            <rect key="frame" x="166.5" y="11" width="42" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="AdA-vP-n2u" firstAttribute="leading" secondItem="qgK-v4-W87" secondAttribute="leading" constant="16" id="0cl-dd-lqM"/>
                                         <constraint firstItem="OlC-gz-GwR" firstAttribute="top" secondItem="1XL-Ks-oOg" secondAttribute="bottom" id="K5W-CB-oHo"/>
-                                        <constraint firstAttribute="trailing" secondItem="OlC-gz-GwR" secondAttribute="trailing" id="WxU-e4-Sy6"/>
-                                        <constraint firstAttribute="trailing" secondItem="1XL-Ks-oOg" secondAttribute="trailing" constant="16" id="jrT-FC-DF7"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="OlC-gz-GwR" secondAttribute="trailing" id="WxU-e4-Sy6"/>
+                                        <constraint firstItem="1XL-Ks-oOg" firstAttribute="centerX" secondItem="qgK-v4-W87" secondAttribute="centerXWithinMargins" id="iro-4N-zB9"/>
                                         <constraint firstItem="1XL-Ks-oOg" firstAttribute="top" secondItem="qgK-v4-W87" secondAttribute="top" constant="11" id="krX-E1-RdJ"/>
-                                        <constraint firstItem="AdA-vP-n2u" firstAttribute="top" secondItem="qgK-v4-W87" secondAttribute="top" constant="11" id="tjK-De-xiK"/>
-                                        <constraint firstItem="OlC-gz-GwR" firstAttribute="leading" secondItem="qgK-v4-W87" secondAttribute="leading" id="tn6-zb-CIl"/>
+                                        <constraint firstItem="OlC-gz-GwR" firstAttribute="leading" secondItem="qgK-v4-W87" secondAttribute="leadingMargin" id="tn6-zb-CIl"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="dateLabel" destination="1XL-Ks-oOg" id="3iN-4s-00b"/>
                                     <outlet property="datePicker" destination="OlC-gz-GwR" id="9p8-zW-odz"/>
-                                    <outlet property="descriptionLabel" destination="AdA-vP-n2u" id="mpK-Un-mXA"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TextViewCell" id="Hbf-Oe-xaj" customClass="TextViewCell" customModule="SheepList" customModuleProvider="target">
@@ -294,9 +288,9 @@
                                             <rect key="frame" x="16" y="7" width="95.5" height="30"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             <connections>
-                                                <action selector="sheepIDTextEditingChanged:" destination="lPO-q9-oUr" eventType="editingDidEnd" id="UQF-Ph-oVs"/>
+                                                <action selector="sheepIDTextEditingChanged:" destination="lPO-q9-oUr" eventType="editingChanged" id="tj6-xO-xRp"/>
                                             </connections>
                                         </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abr-qG-fgN">
@@ -313,11 +307,11 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="Abr-qG-fgN" secondAttribute="trailing" constant="16" id="64V-k5-VUk"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Abr-qG-fgN" secondAttribute="trailing" constant="8" id="64V-k5-VUk"/>
                                         <constraint firstItem="a8p-v2-mx6" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="MHc-oV-9cN"/>
                                         <constraint firstItem="Abr-qG-fgN" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="N4d-24-MMc"/>
                                         <constraint firstItem="p1o-U1-bv3" firstAttribute="centerY" secondItem="thA-k5-Ttq" secondAttribute="centerY" id="NxX-zm-Mld"/>
-                                        <constraint firstItem="a8p-v2-mx6" firstAttribute="centerX" secondItem="thA-k5-Ttq" secondAttribute="centerX" id="dZA-Q8-JKH"/>
+                                        <constraint firstItem="a8p-v2-mx6" firstAttribute="centerX" secondItem="thA-k5-Ttq" secondAttribute="centerXWithinMargins" id="dZA-Q8-JKH"/>
                                         <constraint firstItem="p1o-U1-bv3" firstAttribute="leading" secondItem="thA-k5-Ttq" secondAttribute="leadingMargin" constant="8" id="ogd-Q2-okW"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -372,6 +366,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="JI2-yO-Hdo"/>
+        <segue reference="50e-fu-GHb"/>
     </inferredMetricsTieBreakers>
 </document>

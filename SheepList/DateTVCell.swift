@@ -8,7 +8,6 @@
 import UIKit
 
 class DateTVCell: UITableViewCell {
-    @IBOutlet weak var descriptionLabel: UILabel!
 
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!

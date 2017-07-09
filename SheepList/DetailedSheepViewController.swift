@@ -10,7 +10,10 @@ import UIKit
 
 class DetailedSheepViewController: UITableViewController {
     var sheep: Sheep?
-    var lastAddedLamb: String?
+    var lastSavedLamb: String?
+    
+    let sheepSection = 0
+    let lambSection = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +24,7 @@ class DetailedSheepViewController: UITableViewController {
     }
     // return how many rows
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        if section == sheepSection {
             return 1
         }else{
             if let numberOfRows = sheep?.lambs.count{
@@ -37,7 +40,7 @@ class DetailedSheepViewController: UITableViewController {
             fatalError("Could not dequeue a cell")
         }
         
-        if indexPath.section == 0 {
+        if indexPath.section == sheepSection {
             if let sheep = sheep{
                 cell.sheepIDTextLabel.text = sheep.sheepID
                 updateBirthdayLabel(date: sheep.birthday, cell: cell)
@@ -65,13 +68,45 @@ class DetailedSheepViewController: UITableViewController {
             let editSheepTableViewController = segue.destination
                 as! EditSheepTableViewController
             let indexPath = tableView.indexPathForSelectedRow!
-            if indexPath.section == 0 {
+            if indexPath.section == sheepSection {
                 editSheepTableViewController.sheep = sheep!
             }else{
                 editSheepTableViewController.sheep = (sheep?.lambs[indexPath.row])!
             }
-            editSheepTableViewController.lastAddedLamb = lastAddedLamb
+            editSheepTableViewController.lastSavedLamb = lastSavedLamb
+            if tableView.indexPathForSelectedRow?.section == sheepSection {
+                editSheepTableViewController.seguedFrom = "sheepList"
+            }else{
+                editSheepTableViewController.seguedFrom = "detailedSheep"
+            }
         }
+    }
+    
+    @IBAction func unwindToDetailedSheep(segue: UIStoryboardSegue) {
+        guard segue.identifier == "SaveUnwindToDetailedSheep" else { return }
+        let sourceViewController = segue.source as! EditSheepTableViewController
+        
+        let NewSheep = sourceViewController.sheep
+        guard Sheep.isCorrectFormat(for: NewSheep) else {
+            fatalError("Trying to save sheep with wrong format")
+        }
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            switch selectedIndexPath.section {
+            case sheepSection:
+                sheep = NewSheep
+            case lambSection:
+                sheep?.lambs[selectedIndexPath.row] = NewSheep
+            default:
+                break
+            }
+            tableView.reloadRows(at: [selectedIndexPath], with: .none)
+        
+        } else {
+            let newIndexPath = IndexPath(row: (sheep?.lambs.count)!, section: lambSection)
+            sheep?.lambs.append(NewSheep)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+        tableView.scrollToBottom(ofSection: lambSection)
     }
 
     func updateBirthdayLabel(date: Date?, cell: DetailedSheepCell) {

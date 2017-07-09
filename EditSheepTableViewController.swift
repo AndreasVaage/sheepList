@@ -9,10 +9,12 @@
 import UIKit
 
 class EditSheepTableViewController: UITableViewController {
+    
 
     // MARK: - Table view data source
     var sheep = Sheep(sheepID: nil)
-    var lastAddedLamb: String?
+    var lastSavedLamb: String?
+    var seguedFrom: String?
     var isDatePickerHidden = true
     
     let sheepSection = 0
@@ -20,17 +22,44 @@ class EditSheepTableViewController: UITableViewController {
     let notesSection = 2
     let lambSection = 3
     
-    
+
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    
     @IBOutlet weak var addLambButton: UIButton!
+    
+    @IBAction func saveUnwind(_ sender: UIBarButtonItem) {
+        switch seguedFrom! {
+        case "detailedSheep":
+            self.performSegue(withIdentifier: "SaveUnwindToDetailedSheep", sender: nil)
+        case "sheepList":
+            self.performSegue(withIdentifier: "SaveUnwindToSheepList", sender: nil)
+        default:
+            fatalError("Unknown segueFrom value")
+        }
+    }
+    
+    @IBAction func cancelUnwind(_ sender: UIBarButtonItem) {
+        switch seguedFrom! {
+        case "detailedSheep":
+            self.performSegue(withIdentifier: "cancelUnwindToDetailedSheep", sender: nil)
+        case "sheepList":
+            self.performSegue(withIdentifier: "cancelUnwindToSheepList", sender: nil)
+        default:
+            fatalError("Unknown segueFrom value")
+        }
+
+    }
+    
     @IBAction func addLambButtonPressed(_ sender: UIButton) {
         let newIndexPath = IndexPath(row: sheep.lambs.count ,section: lambSection)
         var sheepID: String? = nil
-        if lastAddedLamb != nil {
-            if let lastAddedLambInt = Int(lastAddedLamb!){
-                lastAddedLamb = String(describing: lastAddedLambInt+1)
-                sheepID = lastAddedLamb
+        
+        if let lastLamb = sheep.lambs.last?.sheepID {
+            if let lastAddedLambInt = Int(lastLamb){
+                sheepID = String(describing: lastAddedLambInt+1)
+            }
+        }else if lastSavedLamb != nil {
+            if let lastAddedLambInt = Int(lastSavedLamb!){
+                sheepID = String(describing: lastAddedLambInt+1)
             }
         }
         sheep.lambs.append(Sheep(sheepID: sheepID, birthday: Date()))
@@ -55,7 +84,6 @@ class EditSheepTableViewController: UITableViewController {
             sheep.sheepID = enteredText
         case lambSection:
             sheep.lambs[indexPath.row].sheepID = enteredText
-            lastAddedLamb = enteredText
         default:
             fatalError("Section should not have a textfield")
         }
@@ -71,7 +99,6 @@ class EditSheepTableViewController: UITableViewController {
         super.viewDidLoad()
         updateSaveButtonState()
         updateLambFooter()
-        //updateLambHeader()
     }
 
     override func didReceiveMemoryWarning() {
@@ -104,6 +131,7 @@ class EditSheepTableViewController: UITableViewController {
                 fatalError("Could not dequeue a cell")
             }
             cell.sheepIDTextField.text = sheep.sheepID
+            cell.addDoneButtonOnKeyboard()
             return cell
         case birtdaySection: //datepicker
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell") as? DateTVCell else {
@@ -134,6 +162,7 @@ class EditSheepTableViewController: UITableViewController {
                 cell.DateLabel.text = "Unknown"
             }
             cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell.addDoneButtonOnKeyboard()
             return cell
             
         default:
@@ -159,12 +188,12 @@ class EditSheepTableViewController: UITableViewController {
         super.prepare(for: segue, sender: sender)
         
         guard segue.identifier == "saveUnwind" else {
-            sheep.sheepID = "Test"
             return
         }
         guard Sheep.isCorrectFormat(for: sheep) else {
             fatalError("Trying to save sheep with wrong format")
         }
+        
     }
     
     func updateSaveButtonState() {

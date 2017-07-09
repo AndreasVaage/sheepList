@@ -49,15 +49,16 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
                 selectedSheep = sheeps[indexPath.row]
             }
             detailedSheepViewController.sheep = selectedSheep
-            detailedSheepViewController.lastAddedLamb = findLastAddedLambID()
+            detailedSheepViewController.lastSavedLamb = findLastSavedLambID()
         }else{
             let navVC = segue.destination as? UINavigationController
             
             let addSheeptableVC = navVC?.viewControllers.first as! EditSheepTableViewController
-            addSheeptableVC.lastAddedLamb = findLastAddedLambID()
+            addSheeptableVC.lastSavedLamb = findLastSavedLambID()
+            addSheeptableVC.seguedFrom = "sheepList"
         }
     }
-    func findLastAddedLambID() -> String? {
+    func findLastSavedLambID() -> String? {
         for sheep in sheeps.reversed(){
             if let lambID = sheep.lambs.last?.sheepID {
                 return lambID
@@ -67,7 +68,7 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     }
     
     @IBAction func unwindToSheepList(segue: UIStoryboardSegue) {
-        guard segue.identifier == "saveUnwind" else { return }
+        guard segue.identifier == "SaveUnwindToSheepList" else {return}
         let sourceViewController = segue.source as! EditSheepTableViewController
         
         let sheep = sourceViewController.sheep

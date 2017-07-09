@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mVr-tB-VO7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mVr-tB-VO7">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -149,7 +149,11 @@
                             <outlet property="delegate" destination="Qdg-6d-q1Y" id="CPE-UF-xyK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Detailed View" id="bbe-3I-xW2"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Detailed" id="fag-e6-8ac">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="wNe-h2-KEL"/>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rkl-8e-zow" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -329,24 +333,28 @@
                     <navigationItem key="navigationItem" title="Edit Sheep" id="D5c-Rv-zUo">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Uyq-Md-OZW">
                             <connections>
-                                <segue destination="9ui-HW-8yV" kind="unwind" unwindAction="unwindToSheepListWithSegue:" id="eQa-FR-c7p"/>
+                                <action selector="cancelUnwind:" destination="lPO-q9-oUr" id="9oU-5v-by4"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="el9-zf-QT9">
                             <connections>
-                                <segue destination="9ui-HW-8yV" kind="unwind" identifier="saveUnwind" unwindAction="unwindToSheepListWithSegue:" id="2o7-N7-Rve"/>
+                                <action selector="saveUnwind:" destination="lPO-q9-oUr" id="llr-wZ-JO1"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addLambButton" destination="iqx-rt-h0g" id="eLj-YW-G9N"/>
                         <outlet property="saveButton" destination="el9-zf-QT9" id="BC7-T1-yC7"/>
+                        <segue destination="9ui-HW-8yV" kind="unwind" identifier="SaveUnwindToDetailedSheep" unwindAction="unwindToDetailedSheepWithSegue:" id="unZ-wt-gIw"/>
+                        <segue destination="9ui-HW-8yV" kind="unwind" identifier="SaveUnwindToSheepList" unwindAction="unwindToSheepListWithSegue:" id="ddg-fd-VYo"/>
+                        <segue destination="9ui-HW-8yV" kind="unwind" identifier="cancelUnwindToDetailedSheep" unwindAction="unwindToDetailedSheepWithSegue:" id="qya-vy-vFZ"/>
+                        <segue destination="9ui-HW-8yV" kind="unwind" identifier="cancelUnwindToSheepList" unwindAction="unwindToSheepListWithSegue:" id="lQ4-lq-peN"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hM0-bZ-ldU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="9ui-HW-8yV" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="365.60000000000002" y="1150.9745127436283"/>
+            <point key="canvasLocation" x="366" y="1250"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="nFM-Wm-cSd">
@@ -362,7 +370,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iHv-3x-dee" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-503" y="1151"/>
+            <point key="canvasLocation" x="-504" y="1250"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

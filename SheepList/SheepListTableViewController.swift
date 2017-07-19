@@ -9,8 +9,7 @@
 import UIKit
 
 class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
-    var sheeps = [Sheep]()
-    var filteredSheeps = [Sheep]()
+    var modelC: ModelController!
     //var lambs = [Sheep]()
     
     let searchController = UISearchController(searchResultsController: nil)
@@ -27,9 +26,9 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         
         
         if let savedSheeps = Sheep.loadSheeps() {
-            sheeps = savedSheeps
+            modelC.sheeps = savedSheeps
         } else {
-            sheeps = Sheep.loadSampleSheeps()
+            modelC.sheeps = Sheep.loadSampleSheeps()
         }
         navigationItem.leftBarButtonItem = editButtonItem
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -42,31 +41,23 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
                 as! DetailedSheepViewController
             let indexPath = tableView.indexPathForSelectedRow!
             
-            let selectedSheep: Sheep
             if searchController.isActive && searchController.searchBar.text != "" {
-                selectedSheep = filteredSheeps[indexPath.row]
+                modelC.sheepGroup = .search
             }else{
-                selectedSheep = sheeps[indexPath.row]
+                modelC.sheepGroup = .all
             }
-            detailedSheepViewController.sheep = selectedSheep
-            detailedSheepViewController.lastSavedLamb = findLastSavedLambID()
-        }else{
+            modelC.selectedSheep = indexPath.row
+            detailedSheepViewController.modelC = modelC
+        }else if segue.identifier == "newSheep"{
             let navVC = segue.destination as? UINavigationController
             
             let addSheeptableVC = navVC?.viewControllers.first as! EditSheepTableViewController
-            addSheeptableVC.lastSavedLamb = findLastSavedLambID()
             addSheeptableVC.seguedFrom = "sheepList"
+        }else{
+            fatalError("Unknown Segue")
         }
     }
-    func findLastSavedLambID() -> String? {
-        for sheep in sheeps.reversed(){
-            if let lambID = sheep.lambs.last?.sheepID {
-                return lambID
-            }
-        }
-        return nil
-    }
-    
+        
     @IBAction func unwindToSheepList(segue: UIStoryboardSegue) {
         guard segue.identifier == "SaveUnwindToSheepList" else {return}
         let sourceViewController = segue.source as! EditSheepTableViewController
@@ -77,22 +68,22 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         }
         if let selectedIndexPath =
             tableView.indexPathForSelectedRow {
-            sheeps[selectedIndexPath.row] = sheep
+            modelC.sheeps[selectedIndexPath.row] = sheep
             tableView.reloadRows(at: [selectedIndexPath], with: .none)
         } else {
-            let newIndexPath = IndexPath(row: sheeps.count, section: 0)
-            sheeps.append(sheep)
+            let newIndexPath = IndexPath(row: modelC.sheeps.count, section: 0)
+            modelC.sheeps.append(sheep)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
         }
-        Sheep.saveSheeps(sheeps)
+        Sheep.saveSheeps(modelC.sheeps)
         tableView.scrollToBottom(ofSection: 0)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.isActive && searchController.searchBar.text != "" {
-            return filteredSheeps.count
+            return modelC.filteredSheeps.count
         }
-        return sheeps.count
+        return modelC.sheeps.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,9 +96,9 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         
         let sheep: Sheep
         if searchController.isActive && searchController.searchBar.text != "" {
-            sheep = filteredSheeps[indexPath.row]
+            sheep = modelC.filteredSheeps[indexPath.row]
         }else {
-            sheep = sheeps[indexPath.row]
+            sheep = modelC.sheeps[indexPath.row]
         }
         cell.SheepIDLabel?.text = sheep.sheepID
         
@@ -137,7 +128,7 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     }
     
     func filterContentForSearchText(searchText: String, scope: String = "All"){
-        filteredSheeps = sheeps.filter { sheep in
+        modelC.filteredSheeps = modelC.sheeps.filter { sheep in
             for lamb in sheep.lambs {
                 if subSecuence(is: searchText.lowercased(), subSecuenceOff: lamb.sheepID!.lowercased()){
                     return true
@@ -192,9 +183,9 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     }
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            sheeps.remove(at: indexPath.row)
+            modelC.sheeps.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            Sheep.saveSheeps(sheeps)
+            Sheep.saveSheeps(modelC.sheeps)
         }
     }
 }

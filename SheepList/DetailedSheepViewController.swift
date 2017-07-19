@@ -10,13 +10,16 @@ import UIKit
 
 class DetailedSheepViewController: UITableViewController {
     var sheep: Sheep?
-    var lastSavedLamb: String?
-    
+    var modelC: ModelController!
     let sheepSection = 0
     let lambSection = 1
     
-    override func viewDidLoad() {
+    override func viewDidLoad() { // runs only one time: when the viewcontroller is created.
         super.viewDidLoad()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        sheep = modelC.sheeps[modelC.selectedSheep!]
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -73,7 +76,7 @@ class DetailedSheepViewController: UITableViewController {
             }else{
                 editSheepTableViewController.sheep = (sheep?.lambs[indexPath.row])!
             }
-            editSheepTableViewController.lastSavedLamb = lastSavedLamb
+            editSheepTableViewController.lastSavedLamb = modelC.findLastSavedLambID()
             if tableView.indexPathForSelectedRow?.section == sheepSection {
                 editSheepTableViewController.seguedFrom = "sheepList"
             }else{

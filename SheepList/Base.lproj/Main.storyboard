@@ -80,7 +80,7 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Kt0-So-fWK"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="LdS-a8-88F">
                             <connections>
-                                <segue destination="nXF-d3-Sip" kind="presentation" id="DqP-lk-hz4"/>
+                                <segue destination="lPO-q9-oUr" kind="presentation" id="CLu-Wy-Y93"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -354,23 +354,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hM0-bZ-ldU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="9ui-HW-8yV" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="366" y="1250"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="nFM-Wm-cSd">
-            <objects>
-                <navigationController id="nXF-d3-Sip" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nsC-EP-6Ue">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="lPO-q9-oUr" kind="relationship" relationship="rootViewController" id="JI2-yO-Hdo"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iHv-3x-dee" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-504" y="1250"/>
+            <point key="canvasLocation" x="-66" y="1228"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

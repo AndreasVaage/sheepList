@@ -10,6 +10,7 @@ import UIKit
 
 class DetailedSheepViewController: UITableViewController {
     var sheep: Sheep?
+    var sheepIndex: Int?
     var modelC: ModelController!
     let sheepSection = 0
     let lambSection = 1
@@ -19,7 +20,6 @@ class DetailedSheepViewController: UITableViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        sheep = modelC.sheeps[modelC.selectedSheep!]
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -67,49 +67,39 @@ class DetailedSheepViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "editSheep" {
-            let editSheepTableViewController = segue.destination
-                as! EditSheepTableViewController
-            let indexPath = tableView.indexPathForSelectedRow!
-            if indexPath.section == sheepSection {
-                editSheepTableViewController.sheep = sheep!
-            }else{
-                editSheepTableViewController.sheep = (sheep?.lambs[indexPath.row])!
-            }
-            editSheepTableViewController.lastSavedLamb = modelC.findLastSavedLambID()
-            if tableView.indexPathForSelectedRow?.section == sheepSection {
-                editSheepTableViewController.seguedFrom = "sheepList"
-            }else{
-                editSheepTableViewController.seguedFrom = "detailedSheep"
-            }
+        guard segue.identifier == "editSheep" else { return }
+        
+        let editSheepTableViewController = segue.destination
+            as! EditSheepTableViewController
+        
+        editSheepTableViewController.sheepIndex = sheepIndex
+        
+        let indexPath = tableView.indexPathForSelectedRow!
+        
+        switch indexPath.section {
+        case sheepSection:
+            editSheepTableViewController.sheep = sheep!
+            editSheepTableViewController.lambIndex = nil
+            editSheepTableViewController.seguedFrom = "sheepList"
+        case lambSection:
+            editSheepTableViewController.sheep = (sheep?.lambs[indexPath.row])!
+            editSheepTableViewController.lambIndex = indexPath.row
+            editSheepTableViewController.seguedFrom = "detailedSheep"
+        default:
+            fatalError("Unknown section")
         }
+        
+        editSheepTableViewController.modelC = modelC
     }
     
     @IBAction func unwindToDetailedSheep(segue: UIStoryboardSegue) {
         guard segue.identifier == "SaveUnwindToDetailedSheep" else { return }
-        let sourceViewController = segue.source as! EditSheepTableViewController
         
-        let NewSheep = sourceViewController.sheep
-        guard Sheep.isCorrectFormat(for: NewSheep) else {
-            fatalError("Trying to save sheep with wrong format")
+        let selectedIndexPath = tableView.indexPathForSelectedRow!
+        guard selectedIndexPath.section == lambSection else {
+            fatalError("Not possible to unwind to this view without editing lamb info")
         }
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            switch selectedIndexPath.section {
-            case sheepSection:
-                sheep = NewSheep
-            case lambSection:
-                sheep?.lambs[selectedIndexPath.row] = NewSheep
-            default:
-                break
-            }
-            tableView.reloadRows(at: [selectedIndexPath], with: .none)
-        
-        } else {
-            let newIndexPath = IndexPath(row: (sheep?.lambs.count)!, section: lambSection)
-            sheep?.lambs.append(NewSheep)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-        }
-        tableView.scrollToBottom(ofSection: lambSection)
+        updateData()
     }
 
     func updateBirthdayLabel(date: Date?, cell: DetailedSheepCell) {
@@ -129,5 +119,10 @@ class DetailedSheepViewController: UITableViewController {
             return "Lambs"
         }
     }
-
+    func updateData() {
+        sheep = modelC.sheeps[sheepIndex!]
+        tableView.reloadData()
+    }
 }
+
+

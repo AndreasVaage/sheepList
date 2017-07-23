@@ -14,6 +14,11 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     
     let searchController = UISearchController(searchResultsController: nil)
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         searchController.searchResultsUpdater = self
@@ -28,7 +33,7 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         if let savedSheeps = Sheep.loadSheeps() {
             modelC.sheeps = savedSheeps
         } else {
-            modelC.sheeps = Sheep.loadSampleSheeps()
+            modelC.sheeps = []
         }
         navigationItem.leftBarButtonItem = editButtonItem
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -39,44 +44,33 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         if segue.identifier == "showDetails" {
             let detailedSheepViewController = segue.destination
                 as! DetailedSheepViewController
-            let indexPath = tableView.indexPathForSelectedRow!
             
             if searchController.isActive && searchController.searchBar.text != "" {
                 modelC.sheepGroup = .search
             }else{
                 modelC.sheepGroup = .all
             }
-            modelC.selectedSheep = indexPath.row
+           // modelC.selectedSheep = indexPath.row
             detailedSheepViewController.modelC = modelC
+            detailedSheepViewController.sheep = modelC.sheeps[tableView.indexPathForSelectedRow!.row]
+            detailedSheepViewController.sheepIndex = tableView.indexPathForSelectedRow!.row
         }else if segue.identifier == "newSheep"{
-            let navVC = segue.destination as? UINavigationController
-            
-            let addSheeptableVC = navVC?.viewControllers.first as! EditSheepTableViewController
+            let addSheeptableVC = segue.destination as! EditSheepTableViewController
+            addSheeptableVC.modelC = modelC
             addSheeptableVC.seguedFrom = "sheepList"
+            addSheeptableVC.sheepIndex = nil
         }else{
             fatalError("Unknown Segue")
         }
     }
         
     @IBAction func unwindToSheepList(segue: UIStoryboardSegue) {
-        guard segue.identifier == "SaveUnwindToSheepList" else {return}
-        let sourceViewController = segue.source as! EditSheepTableViewController
-        
-        let sheep = sourceViewController.sheep
-        guard Sheep.isCorrectFormat(for: sheep) else {
-            fatalError("Trying to save sheep with wrong format")
-        }
-        if let selectedIndexPath =
-            tableView.indexPathForSelectedRow {
-            modelC.sheeps[selectedIndexPath.row] = sheep
-            tableView.reloadRows(at: [selectedIndexPath], with: .none)
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            tableView.reloadRows(at: [selectedIndexPath], with: UITableViewRowAnimation.automatic )
         } else {
-            let newIndexPath = IndexPath(row: modelC.sheeps.count, section: 0)
-            modelC.sheeps.append(sheep)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            let newIndexPath = IndexPath(row: modelC.sheeps.count-1, section: 0)
+            tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.bottom )
         }
-        Sheep.saveSheeps(modelC.sheeps)
-        tableView.scrollToBottom(ofSection: 0)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -127,6 +121,31 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         return cell
     }
     
+    
+    //EDITING
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if tableView.isEditing {
+            return .delete
+        }
+        
+        return .none
+    }
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            modelC.deleteSheep(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+}
+
+extension SheepListTableViewController: UISearchResultsUpdating{
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchText: searchController.searchBar.text!)
+    }
     func filterContentForSearchText(searchText: String, scope: String = "All"){
         modelC.filteredSheeps = modelC.sheeps.filter { sheep in
             for lamb in sheep.lambs {
@@ -156,42 +175,5 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
             }
         }
         return offset == str1.characters.count
-    }
-    
-//    func checkmarkTapped(sender: SheepCell) {
-//        if let indexPath = tableView.indexPath(for: sender) {
-//            let sheep = sheeps[indexPath.row]
-//            sheep.checked = !sheep.checked
-//            tableView.reloadRows(at: [indexPath], with: .automatic)
-//            Sheep.saveSheeps(sheeps)
-//        }
-//        
-//    }
-    
-    
-    //EDITING
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        if tableView.isEditing {
-            return .delete
-        }
-        
-        return .none
-    }
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            modelC.sheeps.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            Sheep.saveSheeps(modelC.sheeps)
-        }
-    }
-}
-
-extension SheepListTableViewController: UISearchResultsUpdating{
-    func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchText: searchController.searchBar.text!)
     }
 }

@@ -80,7 +80,7 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Kt0-So-fWK"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="LdS-a8-88F">
                             <connections>
-                                <segue destination="lPO-q9-oUr" kind="presentation" id="CLu-Wy-Y93"/>
+                                <segue destination="lPO-q9-oUr" kind="show" identifier="newSheep" id="CLu-Wy-Y93"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -331,9 +331,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Edit Sheep" id="D5c-Rv-zUo">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Uyq-Md-OZW">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="qsq-Ct-wCs">
                             <connections>
-                                <action selector="cancelUnwind:" destination="lPO-q9-oUr" id="9oU-5v-by4"/>
+                                <action selector="cancelUnwind:" destination="lPO-q9-oUr" id="5ET-Oa-XrF"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="el9-zf-QT9">
@@ -358,6 +358,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="50e-fu-GHb"/>
+        <segue reference="CLu-Wy-Y93"/>
     </inferredMetricsTieBreakers>
 </document>

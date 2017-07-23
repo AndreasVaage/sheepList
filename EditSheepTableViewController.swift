@@ -8,12 +8,15 @@
 
 import UIKit
 
+
 class EditSheepTableViewController: UITableViewController {
     
 
     // MARK: - Table view data source
+    var modelC: ModelController!
     var sheep = Sheep(sheepID: nil)
-    var lastSavedLamb: String?
+    var lambIndex: Int?
+    var sheepIndex: Int?
     var seguedFrom: String?
     var isDatePickerHidden = true
     
@@ -57,12 +60,12 @@ class EditSheepTableViewController: UITableViewController {
             if let lastAddedLambInt = Int(lastLamb){
                 sheepID = String(describing: lastAddedLambInt+1)
             }
-        }else if lastSavedLamb != nil {
-            if let lastAddedLambInt = Int(lastSavedLamb!){
+        }else if let lastSavedLamb = modelC.findLastSavedLambID() {
+            if let lastAddedLambInt = Int(lastSavedLamb){
                 sheepID = String(describing: lastAddedLambInt+1)
             }
         }
-        sheep.lambs.append(Sheep(sheepID: sheepID, birthday: Date()))
+        sheep.lambs.append(Sheep(sheepID: sheepID, birthday: Date(), mother: sheep))
         tableView.insertRows(at: [newIndexPath], with: .automatic)
         updateLambHeader()
         updateLambFooter()
@@ -179,7 +182,6 @@ class EditSheepTableViewController: UITableViewController {
         }
     }
 
-    
 
         // MARK: - Navigation
 
@@ -187,13 +189,14 @@ class EditSheepTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
-        guard segue.identifier == "saveUnwind" else {
+        guard segue.identifier == "SaveUnwindToDetailedSheep" || segue.identifier == "SaveUnwindToSheepList" else {
             return
         }
         guard Sheep.isCorrectFormat(for: sheep) else {
             fatalError("Trying to save sheep with wrong format")
         }
-        
+        print("saving ")
+        modelC.save(sheep: sheep, sheepIndex: sheepIndex, lambIndex: lambIndex)
     }
     
     func updateSaveButtonState() {

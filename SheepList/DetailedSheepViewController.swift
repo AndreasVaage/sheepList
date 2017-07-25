@@ -69,27 +69,22 @@ class DetailedSheepViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == "editSheep" else { return }
         
-        let editSheepTableViewController = segue.destination
-            as! EditSheepTableViewController
+        let addSheeptableNC = segue.destination as! UINavigationController
+        let editSheeptableVC = addSheeptableNC.topViewController as! EditSheepTableViewController
         
-        editSheepTableViewController.sheepIndex = sheepIndex
+        editSheeptableVC.sheepIndex = sheepIndex
         
-        let indexPath = tableView.indexPathForSelectedRow!
-        
-        switch indexPath.section {
-        case sheepSection:
-            editSheepTableViewController.sheep = sheep!
-            editSheepTableViewController.lambIndex = nil
-            editSheepTableViewController.seguedFrom = "sheepList"
-        case lambSection:
-            editSheepTableViewController.sheep = (sheep?.lambs[indexPath.row])!
-            editSheepTableViewController.lambIndex = indexPath.row
-            editSheepTableViewController.seguedFrom = "detailedSheep"
-        default:
-            fatalError("Unknown section")
+        if let indexPath = tableView.indexPathForSelectedRow, indexPath.section == lambSection{
+            editSheeptableVC.sheep = (sheep?.lambs[indexPath.row])!
+            editSheeptableVC.lambIndex = indexPath.row
+            editSheeptableVC.seguedFrom = "detailedSheep"
+        }else{
+            editSheeptableVC.sheep = sheep!
+            editSheeptableVC.lambIndex = nil
+            editSheeptableVC.seguedFrom = "sheepList"
         }
         
-        editSheepTableViewController.modelC = modelC
+        editSheeptableVC.modelC = modelC
     }
     
     @IBAction func unwindToDetailedSheep(segue: UIStoryboardSegue) {

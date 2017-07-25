@@ -25,7 +25,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CZF-FR-QeD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-503" y="-296"/>
+            <point key="canvasLocation" x="-1310" y="438"/>
         </scene>
         <!--Sheep List-->
         <scene sceneID="vzg-1Z-1fE">
@@ -80,7 +80,7 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Kt0-So-fWK"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="LdS-a8-88F">
                             <connections>
-                                <segue destination="lPO-q9-oUr" kind="show" identifier="newSheep" id="CLu-Wy-Y93"/>
+                                <segue destination="zhI-2w-mW5" kind="presentation" identifier="newSheep" id="uur-0L-Rzo"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -139,7 +139,6 @@
                                     <outlet property="birthdayLabel" destination="JIL-xW-gQd" id="UBh-2y-bG6"/>
                                     <outlet property="notesTextField" destination="29e-a5-JOu" id="gvm-5Q-2PL"/>
                                     <outlet property="sheepIDTextLabel" destination="Fxi-yC-DH2" id="qj5-BO-VFc"/>
-                                    <segue destination="lPO-q9-oUr" kind="show" identifier="editSheep" id="50e-fu-GHb"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -151,7 +150,11 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Detailed" id="fag-e6-8ac">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="wNe-h2-KEL"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="wNe-h2-KEL">
+                            <connections>
+                                <segue destination="zhI-2w-mW5" kind="presentation" identifier="editSheep" id="8qU-Nd-HUJ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
@@ -354,10 +357,26 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hM0-bZ-ldU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="9ui-HW-8yV" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-66" y="1228"/>
+            <point key="canvasLocation" x="366" y="1236"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="7yN-9j-IhO">
+            <objects>
+                <navigationController id="zhI-2w-mW5" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NJs-mC-crJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="lPO-q9-oUr" kind="relationship" relationship="rootViewController" id="7si-sf-T6a"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rjQ-Qj-4DZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-503" y="1236"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="CLu-Wy-Y93"/>
+        <segue reference="8qU-Nd-HUJ"/>
     </inferredMetricsTieBreakers>
 </document>

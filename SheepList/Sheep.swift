@@ -121,12 +121,12 @@ class Sheep: NSObject, NSCoding {
 //    }
     
     static func isCorrectFormat(for sheep: Sheep) -> Bool{
-        guard let sheepID = sheep.sheepID else { fatalError() }
+        guard let sheepID = sheep.sheepID else { return false }
         guard sheepID != "" else { fatalError() }
         for lamb in sheep.lambs {
             guard let lambID = lamb.sheepID else { fatalError() }
             guard lambID != "" else { fatalError() }
-            guard lamb.lambs == [] else { fatalError() }
+            guard lamb.lambs == [] else { return false }
         }
         if let motherSheep = sheep.mother {
             guard let sheepID = motherSheep.sheepID else { fatalError() }
@@ -136,7 +136,7 @@ class Sheep: NSObject, NSCoding {
             guard let ramID = ram.sheepID else { fatalError() }
             guard ramID != "" else { fatalError() }
         }
-        guard groupMemberships.count == Sheep.groups.count else {
+        guard sheep.groupMemberships.count == Sheep.groups.count else {
             fatalError("Group sizes dont match")
         }
         

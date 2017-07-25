@@ -55,7 +55,9 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
             detailedSheepViewController.sheep = modelC.sheeps[tableView.indexPathForSelectedRow!.row]
             detailedSheepViewController.sheepIndex = tableView.indexPathForSelectedRow!.row
         }else if segue.identifier == "newSheep"{
-            let addSheeptableVC = segue.destination as! EditSheepTableViewController
+            
+            let addSheeptableNC = segue.destination as! UINavigationController
+            let addSheeptableVC = addSheeptableNC.topViewController as! EditSheepTableViewController
             addSheeptableVC.modelC = modelC
             addSheeptableVC.seguedFrom = "sheepList"
             addSheeptableVC.sheepIndex = nil

@@ -13,9 +13,7 @@ import UIKit
 
 class ModelController{
     var sheeps = [Sheep]()
-    var filteredSheeps = [Sheep]()
     var workingSet = [Sheep]()
-    var workingSetActive = false
     
     var everyOneByThemSelf: [Sheep] {
         var sheepList: [Sheep]  = sheeps
@@ -30,7 +28,7 @@ class ModelController{
     }
     var sheepGroup: SheepGroup = .all
     
-    func findMissingSheeps()-> [Sheep]{
+    func findMissingSheeps() -> [Sheep]{
         var missingSheeps = [Sheep]()
         for sheep in workingSet{
             if let mother = sheep.mother {
@@ -61,13 +59,34 @@ class ModelController{
         }
         return count
     }
+   // modelC.sheeps.sort(sortBasedOnMissing)
+    let sortBasedOnMissing = { (lhs: Sheep,rhs: Sheep) -> Bool in
+        if lhs.groupMemberships[2] && !rhs.groupMemberships[2]{
+            return true
+        }
+        var missingLamb = false
+        for lamb in lhs.lambs{
+            if lamb.groupMemberships[2] {
+                missingLamb = true
+                break
+            }
+        }
+        for lamb in rhs.lambs{
+            if lamb.groupMemberships[2] {
+                missingLamb = false
+                break
+            }
+        }
+        
+        return missingLamb
+    }
     
-    func deleteSheep(at sheepIndex: Int) {
-        if workingSetActive{
-            workingSet.remove(at: sheepIndex)
-        }else{
-            sheeps.remove(at: sheepIndex)
+    func delete(sheep: Sheep) {
+        if let index = sheeps.index(of: sheep){
+            sheeps.remove(at: index)
             Sheep.saveSheeps(sheeps)
+        }else{
+            fatalError("Trying to delete sheep which does not exist")
         }
     }
     

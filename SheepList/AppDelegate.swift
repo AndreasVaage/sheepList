@@ -16,10 +16,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        guard let navigationController = window?.rootViewController  as? UINavigationController else{ return false}
-        guard let sheepListViewController = navigationController.topViewController as? SheepListTableViewController else { return false}
+        guard let tabBarController = window?.rootViewController as? UITabBarController else {
+            return false
+        }
+        guard let navigationControllers = tabBarController.customizableViewControllers  as? [UINavigationController] else{ return false}
         
-        sheepListViewController.modelC = ModelController()
+        let modelC = ModelController()
+        for navCtrl in navigationControllers{
+            if let sheepListController = navCtrl.topViewController as? SheepListController {
+                sheepListController.modelC = modelC
+            }
+            if let workingSetController = navCtrl.topViewController as? WorkingSetController{
+                workingSetController.modelC = modelC
+            }
+        }
         return true
     }
 

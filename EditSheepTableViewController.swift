@@ -366,6 +366,5 @@ extension EditSheepTableViewController: UICollectionViewDelegate, UICollectionVi
         
         return sheep.activeGroupMembershipCount()
     }
-
 }
 

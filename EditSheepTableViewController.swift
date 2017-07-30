@@ -23,7 +23,8 @@ class EditSheepTableViewController: UITableViewController {
     let sheepSection = 0
     let birtdaySection = 1
     let notesSection = 2
-    let lambSection = 3
+    let groupSection = 3
+    let lambSection = 4
     
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -113,7 +114,7 @@ class EditSheepTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 4
+        return 5
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -154,6 +155,11 @@ class EditSheepTableViewController: UITableViewController {
             cell.notesTextView.text = sheep.notes
             cell.notesTextView.delegate = self
             return cell
+        case groupSection: //groups
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DisplayGroupsCell") as? DisplayGroupsCell else {
+                fatalError("Could not dequeue a cell")
+            }
+            return cell
         case lambSection:// lambs
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "LambCell") as? LambCell else {
                 fatalError("Could not dequeue a cell")
@@ -180,6 +186,17 @@ class EditSheepTableViewController: UITableViewController {
         }else{
         cell.dateLabel.text = "Unknown"
         }
+    }
+    
+    
+    override func tableView(_ tableView: UITableView,
+                            willDisplay cell: UITableViewCell,
+                            forRowAt indexPath: IndexPath) {
+        
+        guard let tableViewCell = cell as? DisplayGroupsCell else { return }
+        
+        tableViewCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self, forRow: indexPath.row)
+        
     }
 
 
@@ -215,6 +232,8 @@ class EditSheepTableViewController: UITableViewController {
             return "Birthday"
         case notesSection:
             return "Notes"
+        case groupSection:
+            return "Groups"
         case lambSection:
             if sheep.lambs.count == 1 {
                 return " 1 lamb"
@@ -282,6 +301,8 @@ class EditSheepTableViewController: UITableViewController {
         case notesSection:
             tableView.estimatedRowHeight = normalCellHeight
             return UITableViewAutomaticDimension
+        case groupSection:
+            return normalCellHeight
         case lambSection:
             return normalCellHeight
         default:
@@ -327,3 +348,24 @@ extension EditSheepTableViewController: UITextViewDelegate {
         tableView.endUpdates()
     }
 }
+extension EditSheepTableViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SheepGroupCell",
+                                                      for: indexPath as IndexPath) as! SheepGroupCell
+        
+        let group = sheep.activeGroupMemberships()[indexPath.row]
+        cell.groupLabel.text = group.group
+        cell.groupLabel.backgroundColor = group.color
+        cell.groupLabel.textColor = UIColor.white
+        
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        
+        return sheep.activeGroupMembershipCount()
+    }
+
+}
+

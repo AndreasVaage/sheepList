@@ -11,8 +11,70 @@ import UIKit
 class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     var modelC: ModelController!
     //var lambs = [Sheep]()
+    var isAddingToWorkingSet = false
+    var showMissingSheeps = false
     
     let searchController = UISearchController(searchResultsController: nil)
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        print(modelC.workingSetActive)
+        if modelC.workingSetActive && !isAddingToWorkingSet{
+            isAddingToWorkingSet = true
+            searchController.isActive = true
+            sender.title = "done"
+            tableView.reloadData()
+        }else if modelC.workingSetActive && isAddingToWorkingSet {
+            searchController.isActive = false
+            isAddingToWorkingSet = false
+            sender.title = "add"
+            tableView.reloadData()
+        }
+    }
+    
+    @IBAction func chackButtonPressed(_ sender: UIBarButtonItem) {
+        let missingMothers = modelC.findMissingSheeps()
+        let missingSheeps = missingMothers + modelC.findMissingLambs(list: missingMothers + modelC.workingSet)
+        for sheep in missingSheeps{
+            sheep.groupMemberships[2] = true
+        }
+        showMissingSheeps = true
+        
+        modelC.sheeps.sort() {
+            if $0.groupMemberships[2] && !$1.groupMemberships[2]{
+                return true
+            }
+            var missingLamb = false
+            for lamb in $0.lambs{
+                if lamb.groupMemberships[2] {
+                    missingLamb = true
+                    break
+                }
+            }
+            for lamb in $1.lambs{
+                if lamb.groupMemberships[2] {
+                    missingLamb = false
+                    break
+                }
+            }
+            
+            return missingLamb
+        }
+        tableView.reloadData()
+    }
+    
+    @IBOutlet weak var leftToolBar: UIBarButtonItem!
+    
+    @IBAction func leftToolBarPressed(_ sender: UIBarButtonItem) {
+        modelC.workingSetActive = !modelC.workingSetActive
+        if (modelC.workingSetActive){
+            leftToolBar.title = "Home"
+            self.title = "Working Set"
+        }else{
+            leftToolBar.title = "Go to working set"
+            self.title = "Sheep List"
+        }
+        tableView.reloadData()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -30,6 +92,7 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         
         
         
+        
         if let savedSheeps = Sheep.loadSheeps() {
             modelC.sheeps = savedSheeps
         } else {
@@ -39,7 +102,11 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 88
     }
-    
+    //laksjlkjsad
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        return !tableView.isEditing && !modelC.workingSetActive
+    }
+    //ojadsos
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetails" {
             let detailedSheepViewController = segue.destination
@@ -67,6 +134,9 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     }
         
     @IBAction func unwindToSheepList(segue: UIStoryboardSegue) {
+        guard segue.identifier == "SaveUnwindToSheepList" else {
+            return
+        }
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
             tableView.reloadRows(at: [selectedIndexPath], with: UITableViewRowAnimation.automatic )
         } else {
@@ -78,6 +148,8 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.isActive && searchController.searchBar.text != "" {
             return modelC.filteredSheeps.count
+        }else if modelC.workingSetActive && !isAddingToWorkingSet{
+            return modelC.workingSet.count
         }
         return modelC.sheeps.count
     }
@@ -89,22 +161,31 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         guard cell.LambStackView.subviews.count == cell.LambStackView.arrangedSubviews.count else {
             fatalError("Arranged subviews count dont match subview count")
         }
-        
         let sheep: Sheep
         if searchController.isActive && searchController.searchBar.text != "" {
             sheep = modelC.filteredSheeps[indexPath.row]
-        }else {
+        }else if modelC.workingSetActive && !isAddingToWorkingSet{
+            sheep = modelC.workingSet[indexPath.row]
+        }else{
             sheep = modelC.sheeps[indexPath.row]
         }
         cell.SheepIDLabel?.text = sheep.sheepID
+        cell.SheepIDLabel.textColor = sheep.activeGroupMemberships().first?.color
+
+        
+        if modelC.workingSetActive && !isAddingToWorkingSet && !showMissingSheeps{
+            return cell
+        }
         
         for (index,lamb) in sheep.lambs.enumerated() {
             if cell.LambStackView.subviews.count > index{
                 let labelView = cell.LambStackView.arrangedSubviews[index] as! UILabel
                 labelView.text = lamb.sheepID
+                labelView.textColor = lamb.activeGroupMemberships().first?.color
             }else{
                 let label = UILabel()
                 label.text = lamb.sheepID
+                label.textColor = lamb.activeGroupMemberships().first?.color
                 cell.LambStackView.addArrangedSubview(label)
             }
         }
@@ -121,6 +202,28 @@ class SheepListTableViewController: UITableViewController {  //SheepCellDelegate
         }
         cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         return cell
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if isAddingToWorkingSet && modelC.workingSetActive{
+            modelC.workingSet.append(modelC.filteredSheeps[tableView.indexPathForSelectedRow!.row])
+            if searchController.isActive && searchController.searchBar.text != "" {
+                modelC.filteredSheeps.remove(at: tableView.indexPathForSelectedRow!.row)
+                tableView.deleteRows(at: [tableView.indexPathForSelectedRow!], with: UITableViewRowAnimation.right)
+            }
+        }
+    }
+    
+    func updateHeader() -> String{
+        
+        let numberOfLambs = modelC.countLambsInWorkingSet()
+        let numberOfSheeps = modelC.workingSet.count - numberOfLambs
+        return  "Sheeps: " + String(numberOfSheeps) + " lambs: " + String(numberOfLambs)
+}
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return updateHeader()
     }
     
     
@@ -149,13 +252,20 @@ extension SheepListTableViewController: UISearchResultsUpdating{
         filterContentForSearchText(searchText: searchController.searchBar.text!)
     }
     func filterContentForSearchText(searchText: String, scope: String = "All"){
-        modelC.filteredSheeps = modelC.sheeps.filter { sheep in
-            for lamb in sheep.lambs {
-                if subSecuence(is: searchText.lowercased(), subSecuenceOff: lamb.sheepID!.lowercased()){
-                    return true
-                }
+        if modelC.workingSetActive && isAddingToWorkingSet {
+            modelC.filteredSheeps = modelC.everyOneByThemSelf.filter { sheep in
+                return subSecuence(is: searchText.lowercased(), subSecuenceOff: sheep.sheepID!.lowercased())
             }
-            return subSecuence(is: searchText.lowercased(), subSecuenceOff: sheep.sheepID!.lowercased())
+            
+        }else{
+            modelC.filteredSheeps = modelC.sheeps.filter { sheep in
+                for lamb in sheep.lambs {
+                    if subSecuence(is: searchText.lowercased(), subSecuenceOff: lamb.sheepID!.lowercased()){
+                        return true
+                    }
+                }
+                return subSecuence(is: searchText.lowercased(), subSecuenceOff: sheep.sheepID!.lowercased())
+            }
         }
         tableView.reloadData()
     }

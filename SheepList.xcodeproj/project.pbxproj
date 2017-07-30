@@ -17,7 +17,10 @@
 		E12839661EFAC4A0006CE4C5 /* Sheep.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12839651EFAC4A0006CE4C5 /* Sheep.swift */; };
 		E12839681EFACBDA006CE4C5 /* SheepListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12839671EFACBDA006CE4C5 /* SheepListTableViewController.swift */; };
 		E128396A1EFACC93006CE4C5 /* SheepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12839691EFACC93006CE4C5 /* SheepCell.swift */; };
+		E18553B71F27864700E4CFC0 /* DisplayGroupsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18553B61F27864700E4CFC0 /* DisplayGroupsCell.swift */; };
+		E18553B91F27981000E4CFC0 /* SheepGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18553B81F27981000E4CFC0 /* SheepGroupCell.swift */; };
 		E18A96FD1F126CBF00E51BFF /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18A96FC1F126CBF00E51BFF /* ModelController.swift */; };
+		E1AD57741F2DC5C4006888A4 /* WorkingSetTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AD57731F2DC5C4006888A4 /* WorkingSetTVC.swift */; };
 		E1C8A7941F0432D300FB55C9 /* DateTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C8A7931F0432D300FB55C9 /* DateTVCell.swift */; };
 		E1C8A7961F057DAD00FB55C9 /* LambCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C8A7951F057DAD00FB55C9 /* LambCell.swift */; };
 		E1C8A7981F057E0B00FB55C9 /* TextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C8A7971F057E0B00FB55C9 /* TextViewCell.swift */; };
@@ -37,7 +40,10 @@
 		E12839651EFAC4A0006CE4C5 /* Sheep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sheep.swift; sourceTree = "<group>"; };
 		E12839671EFACBDA006CE4C5 /* SheepListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheepListTableViewController.swift; sourceTree = "<group>"; };
 		E12839691EFACC93006CE4C5 /* SheepCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheepCell.swift; sourceTree = "<group>"; };
+		E18553B61F27864700E4CFC0 /* DisplayGroupsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayGroupsCell.swift; sourceTree = "<group>"; };
+		E18553B81F27981000E4CFC0 /* SheepGroupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheepGroupCell.swift; sourceTree = "<group>"; };
 		E18A96FC1F126CBF00E51BFF /* ModelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelController.swift; sourceTree = "<group>"; };
+		E1AD57731F2DC5C4006888A4 /* WorkingSetTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkingSetTVC.swift; sourceTree = "<group>"; };
 		E1C8A7931F0432D300FB55C9 /* DateTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTVCell.swift; sourceTree = "<group>"; };
 		E1C8A7951F057DAD00FB55C9 /* LambCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LambCell.swift; sourceTree = "<group>"; };
 		E1C8A7971F057E0B00FB55C9 /* TextViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
@@ -78,13 +84,16 @@
 				E10F4D971EFE441100A03E3F /* EditSheepTableViewController.swift */,
 				E12839531EFAC40A006CE4C5 /* AppDelegate.swift */,
 				E12839571EFAC40A006CE4C5 /* Main.storyboard */,
+				E18553B81F27981000E4CFC0 /* SheepGroupCell.swift */,
 				E1C8A7971F057E0B00FB55C9 /* TextViewCell.swift */,
 				E1C8A7951F057DAD00FB55C9 /* LambCell.swift */,
 				E1C8A7931F0432D300FB55C9 /* DateTVCell.swift */,
+				E18553B61F27864700E4CFC0 /* DisplayGroupsCell.swift */,
 				E1D0B3431EFC14E000B1CB81 /* DetailedSheepViewController.swift */,
 				E18A96FC1F126CBF00E51BFF /* ModelController.swift */,
 				E12839651EFAC4A0006CE4C5 /* Sheep.swift */,
 				E12839671EFACBDA006CE4C5 /* SheepListTableViewController.swift */,
+				E1AD57731F2DC5C4006888A4 /* WorkingSetTVC.swift */,
 				E12839691EFACC93006CE4C5 /* SheepCell.swift */,
 				E11136671EFD7ECD00DABB4E /* DetailedSheepCell.swift */,
 				E128395A1EFAC40A006CE4C5 /* Assets.xcassets */,
@@ -171,13 +180,16 @@
 				E12839681EFACBDA006CE4C5 /* SheepListTableViewController.swift in Sources */,
 				E128396A1EFACC93006CE4C5 /* SheepCell.swift in Sources */,
 				E1D0B3441EFC14E000B1CB81 /* DetailedSheepViewController.swift in Sources */,
+				E18553B71F27864700E4CFC0 /* DisplayGroupsCell.swift in Sources */,
 				E12839541EFAC40A006CE4C5 /* AppDelegate.swift in Sources */,
+				E1AD57741F2DC5C4006888A4 /* WorkingSetTVC.swift in Sources */,
 				E1C8A7961F057DAD00FB55C9 /* LambCell.swift in Sources */,
 				E10F4D9A1EFE483E00A03E3F /* EditSheepTableViewCell.swift in Sources */,
 				E11136681EFD7ECD00DABB4E /* DetailedSheepCell.swift in Sources */,
 				E18A96FD1F126CBF00E51BFF /* ModelController.swift in Sources */,
 				E10F4D981EFE441100A03E3F /* EditSheepTableViewController.swift in Sources */,
 				E1C8A7941F0432D300FB55C9 /* DateTVCell.swift in Sources */,
+				E18553B91F27981000E4CFC0 /* SheepGroupCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,8 +10,17 @@ import UIKit
 
 class Sheep: NSObject, NSCoding {
     
-    let lambPrefix = "60"
-    static var groups = ["orphan","dead","missing","sold"]
+    let lambPrefix = "70"
+    struct Group {
+        let group: String
+        let color: UIColor
+        init(_ group: String, _ color: UIColor) {
+            self.group = group
+            self.color = color
+        }
+    }
+    static var groups = [Group("orphan",.blue),Group("dead",.red),Group("missing",.gray),Group("sold",.green),
+                         Group("k",.yellow),Group("test",.purple),Group("testing",.orange),Group("tes",.cyan)]
     
     struct PropertyKey {
         static let sheepID = "sheepID"
@@ -95,6 +104,25 @@ class Sheep: NSObject, NSCoding {
         return (self.sheepID?.hasPrefix(lambPrefix))!
     }
     
+    func activeGroupMembershipCount() -> Int {
+        var count = 0
+        for groupMembership in self.groupMemberships {
+            if groupMembership {
+                count = count + 1
+            }
+        }
+        return count
+    }
+    func activeGroupMemberships() -> [Group] {
+        var activeGroupMemberships: [Group] = []
+        for i in 0..<self.groupMemberships.count {
+            if self.groupMemberships[i] {
+                activeGroupMemberships.append(Sheep.groups[i])
+            }
+        }
+        return activeGroupMemberships
+    }
+    
     static func saveSheeps(_ sheeps: [Sheep]) {
         NSKeyedArchiver.archiveRootObject(sheeps, toFile: Sheep.ArchiveURL.path)
     }
@@ -122,19 +150,19 @@ class Sheep: NSObject, NSCoding {
     
     static func isCorrectFormat(for sheep: Sheep) -> Bool{
         guard let sheepID = sheep.sheepID else { return false }
-        guard sheepID != "" else { fatalError() }
+        guard sheepID != "" else { return false }
         for lamb in sheep.lambs {
-            guard let lambID = lamb.sheepID else { fatalError() }
-            guard lambID != "" else { fatalError() }
+            guard let lambID = lamb.sheepID else { return false }
+            guard lambID != "" else { return false }
             guard lamb.lambs == [] else { return false }
         }
         if let motherSheep = sheep.mother {
-            guard let sheepID = motherSheep.sheepID else { fatalError() }
-            guard sheepID != "" else { fatalError() }
+            guard let sheepID = motherSheep.sheepID else { return false }
+            guard sheepID != "" else { return false }
         }
         if let ram = sheep.father {
-            guard let ramID = ram.sheepID else { fatalError() }
-            guard ramID != "" else { fatalError() }
+            guard let ramID = ram.sheepID else { return false }
+            guard ramID != "" else { return false }
         }
         guard sheep.groupMemberships.count == Sheep.groups.count else {
             fatalError("Group sizes dont match")
